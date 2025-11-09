@@ -1,0 +1,312 @@
+.dashboard-container {
+  padding: 40px;
+  background: linear-gradient(135deg, #dceefb, #f3f5f9);
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.form-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+input,
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+input:focus,
+select:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 5px rgba(111, 66, 193, 0.3);
+}
+
+.fetch-btn {
+  background: linear-gradient(90deg, #007bff, #6f42c1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fetch-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.candidate-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.candidate-card:hover {
+  transform: scale(1.01);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+.interviewer-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.interviewer-card:hover {
+  transform: translateY(-5px);
+  border-color: #007bff;
+}
+
+.interviewer-card.selected {
+  border-color: #6f42c1;
+  background: #f7f3ff;
+  transform: translateY(-5px) scale(1.02);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.badge {
+  background: #007bff;
+  color: white;
+  border-radius: 12px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.card-body p {
+  margin: 6px 0;
+  color: #444;
+}
+
+.available {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.unavailable {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.card-footer {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.select-btn {
+  background: #e0e0e0;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.select-btn:hover {
+  background: #6f42c1;
+  color: white;
+}
+
+.selected-btn {
+  background: #6f42c1 !important;
+  color: white !important;
+}
+
+.assign-btn {
+  display: block;
+  margin: 30px auto;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.assign-btn:hover {
+  transform: scale(1.05);
+}
+
+.success,
+.error,
+.loading {
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #28a745;
+  background: #e9f9ee;
+}
+
+.error {
+  color: #e74c3c;
+  background: #fdecea;
+}
+
+.loading {
+  color: #007bff;
+}
+
+/* 🌟 Search Box Section */
+.search-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+.search-box:hover {
+  transform: scale(1.01);
+}
+
+.search-box input,
+.search-box select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  width: 200px;
+  transition: 0.3s;
+}
+
+.search-box input:focus,
+.search-box select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+.search-btn {
+  background: linear-gradient(90deg, #007bff, #6f42c1);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 📋 Search Results */
+.search-results {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  margin-bottom: 40px;
+}
+
+.search-results h3 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.interviewer-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.interviewer-card:hover {
+  transform: translateY(-4px);
+  border: 2px solid #007bff;
+}
+
+.badge {
+  background: #007bff;
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+
+/* ✨ Smooth fade-in animation */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

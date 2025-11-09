@@ -1,0 +1,87 @@
+<div class="form-container">
+  <div class="form-box">
+    <h2>Create Interviewer</h2>
+
+    <div *ngIf="loading()" class="loading">⏳ Creating interviewer...</div>
+    <div *ngIf="success()" class="success">Interviewer created successfully!</div>
+    <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+
+    <form #interviewerForm="ngForm" (ngSubmit)="onSubmit(interviewerForm)">
+      <!-- 🧑 Name -->
+      <div class="input-group">
+        <label>Full Name</label>
+        <input
+          type="text"
+          name="fullName"
+          [(ngModel)]="interviewer.fullName"
+          required
+          placeholder="Enter full name"
+        />
+      </div>
+
+      <!-- Email -->
+      <div class="input-group">
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="interviewer.email"
+          required
+          placeholder="Enter email address"
+        />
+      </div>
+
+      <!-- Skill Set -->
+      <div class="input-group">
+        <label>Skill Set</label>
+        <input
+          type="text"
+          name="skillSet"
+          [(ngModel)]="interviewer.skillSet"
+          required
+          placeholder="e.g., Java, React, AWS"
+        />
+      </div>
+
+      <!-- Interview Level -->
+      <div class="input-group">
+        <label>Interview Level</label>
+        <select name="interviewLevel" [(ngModel)]="interviewer.interviewLevel" required>
+          <option value="">Select Level</option>
+          <option value="L1">L1</option>
+          <option value="L2">L2</option>
+        </select>
+      </div>
+
+      <!-- Experience -->
+      <div class="input-group">
+        <label>Years of Experience</label>
+        <input
+          type="number"
+          name="experienceYears"
+          [(ngModel)]="interviewer.experienceYears"
+          required
+          min="0"
+          placeholder="Enter years of experience"
+        />
+      </div>
+
+      <!-- Availability -->
+      <div class="input-group checkbox">
+        <label>
+          <input
+            type="checkbox"
+            name="isAvailable"
+            [(ngModel)]="interviewer.isAvailable"
+          />
+          Available for Interviews
+        </label>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" [disabled]="loading() || interviewerForm.invalid">
+        {{ loading() ? 'Creating...' : 'Create Interviewer' }}
+      </button>
+    </form>
+  </div>
+</div>

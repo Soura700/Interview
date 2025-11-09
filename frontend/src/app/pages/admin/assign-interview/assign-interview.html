@@ -1,0 +1,135 @@
+<div class="dashboard-container">
+  <h2>🎯 Search Interviewers for the interview</h2>
+
+  <div *ngIf="loading()" class="loading">⏳ Loading...</div>
+  <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+  <div *ngIf="successMessage()" class="success">{{ successMessage() }}</div>
+
+  <!-- 🔍 Search Interviewers by Skill & Level -->
+  <div class="search-box fade-in">
+    <input
+      type="text"
+      [(ngModel)]="searchSkill"
+      placeholder="🔍 Enter Skill (e.g., Java, Python, Angular)"
+    />
+    <select [(ngModel)]="searchLevel">
+      <option value="">Select Level</option>
+      <option value="L1">L1</option>
+      <option value="L2">L2</option>
+    </select>
+    <button class="search-btn" (click)="searchInterviewers()">Search</button>
+  </div>
+
+  <!-- 🔎 Search Results (Interviewers) -->
+  <div *ngIf="searchedInterviewers.length > 0" class="search-results fade-in">
+    <h3>👤 Matching Interviewers ({{ searchSkill | uppercase }} - {{ searchLevel }})</h3>
+
+    <div class="card-grid">
+      <div
+        *ngFor="let interviewer of searchedInterviewers"
+        class="interviewer-card"
+      >
+        <div class="card-header">
+          <h4>{{ interviewer.fullName }}</h4>
+          <span class="badge">{{ interviewer.interviewLevel }}</span>
+        </div>
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ interviewer.email }}</p>
+          <p><strong>Skills:</strong> {{ interviewer.skillSet }}</p>
+          <p><strong>Experience:</strong> {{ interviewer.experienceYears }} yrs</p>
+          <p>
+            <strong>Status:</strong>
+            <span
+              [class.available]="interviewer.isAvailable"
+              [class.unavailable]="!interviewer.isAvailable"
+            >
+              {{ interviewer.isAvailable ? "Available ✅" : "Unavailable ❌" }}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ✅ Your Existing Code (Candidate + Match + Assignment) -->
+   <h2>🎯 Assign Interview</h2>
+  <div class="form-row">
+    <div class="input-group">
+      <label>Candidate ID</label>
+      <input
+        type="number"
+        [(ngModel)]="candidateId"
+        placeholder="Enter Candidate ID"
+      />
+    </div>
+
+    <div class="input-group">
+      <label>Interview Level</label>
+      <select [(ngModel)]="interviewLevel">
+        <option value="L1">L1</option>
+        <option value="L2">L2</option>
+      </select>
+    </div>
+
+    <button class="fetch-btn" (click)="fetchMatch()">Fetch Match</button>
+  </div>
+
+  <div *ngIf="candidate" class="candidate-card fade-in">
+    <h3>{{ candidate.fullName }}</h3>
+    <p><strong>Email:</strong> {{ candidate.email }}</p>
+    <p><strong>Skills:</strong> {{ candidate.skillSet }}</p>
+    <p><strong>Experience:</strong> {{ candidate.experienceYears }} years</p>
+  </div>
+
+  <div *ngIf="interviewers.length > 0" class="interviewer-section fade-in">
+    <h3>👥 Suggested Interviewers ({{ interviewLevel }})</h3>
+
+    <div class="card-grid">
+      <div
+        *ngFor="let interviewer of interviewers"
+        class="interviewer-card"
+        [ngClass]="{ selected: selectedInterviewerId === interviewer.id }"
+        (click)="selectInterviewer(interviewer.id)"
+      >
+        <div class="card-header">
+          <h4>{{ interviewer.fullName }}</h4>
+          <span class="badge">{{ interviewer.interviewLevel }}</span>
+        </div>
+
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ interviewer.email }}</p>
+          <p><strong>Skill Set:</strong> {{ interviewer.skillSet }}</p>
+          <p><strong>Experience:</strong> {{ interviewer.experienceYears }} yrs</p>
+          <p>
+            <strong>Status:</strong>
+            <span
+              [class.available]="interviewer.isAvailable"
+              [class.unavailable]="!interviewer.isAvailable"
+            >
+              {{ interviewer.isAvailable ? 'Available ✅' : 'Not Available ❌' }}
+            </span>
+          </p>
+        </div>
+
+        <div class="card-footer">
+          <button
+            class="select-btn"
+            [class.selected-btn]="selectedInterviewerId === interviewer.id"
+          >
+            {{ selectedInterviewerId === interviewer.id ? 'Selected' : 'Select' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="assign-btn"
+      [disabled]="!selectedInterviewerId"
+      (click)="assignInterview()"
+    >
+      Assign Interview
+    </button>
+  </div>
+</div>

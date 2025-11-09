@@ -1,0 +1,123 @@
+/* === Overall Layout === */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f9;
+  font-family: "Poppins", sans-serif;
+}
+
+/* === Sidebar === */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #007bff, #6f42c1);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.menu a:hover,
+.menu a.active-link {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* === Logout Button === */
+.logout-section {
+  text-align: center;
+}
+
+.logout-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
+
+/* === Main Content === */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background: white;
+  padding: 15px 25px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.topbar h1 {
+  margin: 0;
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.content-area {
+  padding: 30px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 10px;
+  }
+
+  .menu a {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .logout-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}

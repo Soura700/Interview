@@ -1,0 +1,62 @@
+<div class="auth-container">
+  <div class="auth-box">
+    <h2>Login</h2>
+
+    <div *ngIf="loading()" class="loading">🔄 Logging in...</div>
+    <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <!-- 📧 Email -->
+      <div class="input-group">
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="credentials.email"
+          required
+          email
+          placeholder="Enter your email"
+        />
+      </div>
+
+      <!-- 🔒 Password -->
+      <div class="input-group password-group">
+        <label>Password</label>
+        <input
+          [type]="showPassword() ? 'text' : 'password'"
+          name="password"
+          [(ngModel)]="credentials.password"
+          required
+          placeholder="Enter your password"
+        />
+        <span class="toggle-eye" (click)="togglePasswordVisibility()">
+          {{ showPassword() ? '🙈' : '👁️' }}
+        </span>
+      </div>
+
+      <!-- 🧑‍💼 Role Selection -->
+      <div class="input-group">
+        <label>Login As</label>
+        <select
+          name="role"
+          [(ngModel)]="credentials.role"
+          required
+          class="role-select"
+        >
+          <option value="">Select Role</option>
+          <option value="Candidate">Candidate</option>
+          <option value="Interviewer">Interviewer</option>
+        </select>
+      </div>
+
+      <!-- 🚀 Submit -->
+      <button type="submit" [disabled]="loading() || loginForm.invalid">
+        {{ loading() ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <p class="switch-link">
+      Don’t have an account? <a routerLink="/register">Register</a>
+    </p>
+  </div>
+</div>

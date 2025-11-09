@@ -1,0 +1,42 @@
+<div class="dashboard-container">
+  <h2>📋 View All Assignments</h2>
+
+  <div *ngIf="loading()" class="loading">⏳ Loading assignments...</div>
+  <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+
+  <!-- No Assignments -->
+  <div *ngIf="!loading() && assignments.length === 0" class="no-data">
+    <p>🚫 No assignments found</p>
+  </div>
+
+  <!-- Assignment Cards -->
+  <div *ngIf="assignments.length > 0" class="card-grid fade-in">
+    <div class="assignment-card" *ngFor="let a of assignments">
+      <div class="card-header">
+        <h3>Candidate: {{ a.candidateName }}</h3>
+        <span class="badge" [ngClass]="a.status.toLowerCase()">{{ a.status }}</span>
+      </div>
+
+      <div class="card-body">
+        <div class="candidate-section">
+          <h4>🎓 Candidate Info</h4>
+          <p><strong>Email:</strong> {{ a.candidateEmail }}</p>
+          <p><strong>Skills:</strong> {{ a.candidateSkill }}</p>
+        </div>
+
+        <div class="interviewer-section">
+          <h4>🧑‍💼 Interviewer Info</h4>
+          <p><strong>Name:</strong> {{ a.interviewerName }}</p>
+          <p><strong>Email:</strong> {{ a.interviewerEmail }}</p>
+          <p><strong>Level:</strong> {{ a.interviewerLevel }}</p>
+        </div>
+
+        <div class="extra-section">
+          <h4>🗓️ Schedule</h4>
+          <p><strong>Type:</strong> {{ a.interviewType }}</p>
+          <p><strong>Date:</strong> {{ a.scheduledDate | date: 'medium' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="dashboard-container">
+  <!-- 🧭 Sidebar Navigation -->
+  <aside class="sidebar">
+    <h2 class="logo">Admin Panel</h2>
+
+    <nav class="menu">
+      <a routerLink="create-interviewer" routerLinkActive="active-link">🧑‍💼 Create Interviewer</a>
+      <a routerLink="create-candidate" routerLinkActive="active-link">👩‍🎓 Create Candidate</a>
+      <a routerLink="assign-interview" routerLinkActive="active-link">🧩 Assign Interview</a>
+      <a routerLink="view-assignments" routerLinkActive="active-link">📋 View Assignments</a>
+    </nav>
+
+    <div class="logout-section">
+      <button class="logout-btn" (click)="logout()">🚪 Logout</button>
+    </div>
+  </aside>
+
+  <!-- 🧩 Main Content Area -->
+  <main class="main-content">
+    <header class="topbar">
+      <h1>Welcome, Admin 👋</h1>
+    </header>
+
+    <section class="content-area">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

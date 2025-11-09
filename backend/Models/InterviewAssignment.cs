@@ -1,0 +1,41 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace backend.Models
+{
+    public class InterviewAssignment
+    {
+        [Key] // Primary Key
+        public int Id { get; set; }
+
+        // Foreign Key to Interviewer
+        [Required]
+        [ForeignKey(nameof(Interviewer))] // navigation property name
+        public int InterviewerId { get; set; }
+        public Interviewer Interviewer { get; set; }
+
+        // Foreign Key to Candidate
+        [Required]
+        [ForeignKey(nameof(Candidate))]
+        public int CandidateId { get; set; }
+        public Candidate Candidate { get; set; }
+
+        // Interview Type (L1 / L2)
+        [Required]
+        [StringLength(10)]
+        public string InterviewType { get; set; } = string.Empty;
+
+        // Scheduled Date
+        [Required]
+        public DateTime ScheduledDate { get; set; }
+
+        // Status: Pending / Accepted / Rejected / Cancelled
+        [Required]
+        [StringLength(20)]
+        public string Status { get; set; } = "Pending";
+
+        // Optional remarks or notes
+        [StringLength(255)]
+        public string? Remarks { get; set; }
+    }
+}
