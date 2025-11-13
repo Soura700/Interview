@@ -1,0 +1,59 @@
+.meeting-container {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #e0eafc, #cfdef3);
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+}
+
+.meeting-id {
+  color: #333;
+  font-weight: 500;
+}
+
+.videos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.video-box {
+  background: #ffffffcc;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+video {
+  width: 320px;
+  height: 240px;
+  border-radius: 10px;
+  background-color: #000;
+}
+
+.status {
+  margin-top: 20px;
+}
+
+.connected {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.disconnected {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.messages {
+  margin-top: 30px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  width: 60%;
+  margin: 30px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}

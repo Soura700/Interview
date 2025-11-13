@@ -15,12 +15,27 @@ public class CandidateController : ControllerBase
         _candidateService = candidateService;
     }
 
+    // [HttpPost("create")]
+    // public async Task<IActionResult> Create(CreateCandidateDto dto)
+    // {
+    //     var result = await _candidateService.CreateCandidateAsync(dto);
+    //     return Ok(result);
+    // }
+
     [HttpPost("create")]
-    public async Task<IActionResult> Create(CreateCandidateDto dto)
+public async Task<IActionResult> Create(CreateCandidateDto dto)
+{
+    try
     {
         var result = await _candidateService.CreateCandidateAsync(dto);
         return Ok(result);
     }
+    catch (Exception ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+}
+
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)

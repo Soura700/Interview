@@ -9,10 +9,12 @@ namespace backend.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
+        private readonly IVideoMeetingService _videoMeetingService;
 
-        public AdminController(IAdminService adminService)
+        public AdminController(IAdminService adminService, IVideoMeetingService videoMeetingService)
         {
             _adminService = adminService;
+            _videoMeetingService = videoMeetingService;
         }
 
         /// Get a candidate with all matching interviewers (based on skill, experience, and availability)
@@ -27,11 +29,31 @@ namespace backend.Controllers
 
 
         /// Create interview assignment (Admin assigns candidate to interviewer)
+        // [HttpPost("assignments")]
+        // public async Task<IActionResult> CreateAssignment(CreateAssignmentDto dto)
+        // {
+        //     var result = await _adminService.CreateAssignmentAsync(dto);
+        //     return Ok(result);
+        // }
+
         [HttpPost("assignments")]
         public async Task<IActionResult> CreateAssignment(CreateAssignmentDto dto)
         {
-            var result = await _adminService.CreateAssignmentAsync(dto);
-            return Ok(result);
+            try
+            {
+                // 1. Create the assignment (normal flow)
+                var result = await _adminService.CreateAssignmentAsync(dto);
+
+                // 2. Immediately generate the meeting link for that assignment
+                var meetingLink = await _videoMeetingService.CreateMeetingLinkForAssignmentAsync(result.Id);
+                result.MeetingLink = meetingLink; // store the link in result
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
 
         ///View all interview assignments
@@ -74,6 +96,20 @@ namespace backend.Controllers
 
             return Ok(result);
         }
+
+        //         [HttpPost("assignments")]
+        // public async Task<IActionResult> CreateAssignment(CreateAssignmentDto dto)
+        // {
+        //     var result = await _adminService.CreateAssignmentAsync(dto);
+
+        //     // ✅ Once created, auto-generate a meeting link
+        //     var meetingLink = await _videoMeetingService.CreateMeetingLinkForAssignmentAsync(result.Id);
+
+        //     // ✅ Reload the assignment with the new fields
+        //     result.MeetingLink = meetingLink;
+
+        //     return Ok(result);
+        // }
 
 
     }

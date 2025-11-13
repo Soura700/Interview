@@ -1,0 +1,47 @@
+<div class="report-container">
+  <h2>📊 Monthly Reports</h2>
+
+  <!-- Filters -->
+  <div class="filters">
+    <input type="number" [(ngModel)]="year" placeholder="Year (e.g., 2025)" />
+    <input type="number" [(ngModel)]="month" placeholder="Month (1-12)" />
+    <input type="text" [(ngModel)]="skill" placeholder="Skill (Optional)" />
+
+    <button (click)="loadRejected()">Rejected Candidates</button>
+    <button (click)="loadProposalRejected()">Proposal Rejected</button>
+    <button (click)="loadSuccessBySkill()">Success by Skill</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- Rejected List -->
+  <div class="report-block" *ngIf="rejected.length > 0">
+    <h3>❌ Rejected Candidates</h3>
+    <div class="card" *ngFor="let c of rejected">
+      <p><strong>{{ c.fullName }}</strong></p>
+      <p>Email: {{ c.email }}</p>
+      <p>Skill: {{ c.skillSet }}</p>
+    </div>
+  </div>
+
+  <!-- Proposal Rejected -->
+  <div class="report-block" *ngIf="proposalRejected.length > 0">
+    <h3>🚫 Proposal Rejected</h3>
+    <div class="card" *ngFor="let c of proposalRejected">
+      <p><strong>{{ c.fullName }}</strong></p>
+      <p>Email: {{ c.email }}</p>
+      <p>Skill: {{ c.skillSet }}</p>
+    </div>
+  </div>
+
+  <!-- Success by Skill -->
+  <div class="report-block" *ngIf="successBySkill.length > 0">
+    <h3>🏆 Successful Candidates ({{ skill }})</h3>
+    <div class="card" *ngFor="let c of successBySkill">
+      <p><strong>{{ c.fullName }}</strong></p>
+      <p>Email: {{ c.email }}</p>
+      <p>Skill: {{ c.skillSet }}</p>
+    </div>
+  </div>
+</div>

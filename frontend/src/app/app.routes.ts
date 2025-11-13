@@ -19,18 +19,22 @@ import { ChangePasswordComponent } from './pages/auth/change-password/change-pas
 
 
 
-// 🧑‍💼 Admin Components
+// Admin Components
 import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { CreateCandidate } from './pages/admin/create-candidate/create-candidate';
 import { CreateInterviewer } from './pages/admin/create-interviewer/create-interviewer';
 import { AssignInterview } from './pages/admin/assign-interview/assign-interview';
 import { ViewAssignments } from './pages/admin/view-assignments/view-assignments';
+import { MeetingComponent } from './pages/meeting/meeting';
+import { ReportsComponent } from './pages/admin/reports/reports';
+
 
 export const routes: Routes = [
     // 🧾 Authentication routes
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'changePassword', component: ChangePasswordComponent },
+    { path: 'meeting/:meetingId', component: MeetingComponent },
 
     //Admin dashboard routes (nested)
     {
@@ -40,7 +44,8 @@ export const routes: Routes = [
             { path: 'create-interviewer', component: CreateInterviewer },
             { path: 'create-candidate', component: CreateCandidate },
             { path: 'assign-interview', component: AssignInterview },
-              { path: 'view-assignments', component: ViewAssignments },
+            { path: 'view-assignments', component: ViewAssignments },
+            { path: 'view-reports', component: ReportsComponent },
             { path: '', redirectTo: 'create-interviewer', pathMatch: 'full' } // default page
         ]
     },

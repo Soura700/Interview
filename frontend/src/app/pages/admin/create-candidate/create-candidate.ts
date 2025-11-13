@@ -16,7 +16,7 @@ export class CreateCandidate {
   success = signal(false);
   errorMessage = signal<string | null>(null);
 
-  // 🧑 Candidate object (no resume here)
+  // Candidate object (no resume here)
   candidate = {
     fullName: '',
     email: '',
@@ -26,9 +26,9 @@ export class CreateCandidate {
     role: 'Candidate'
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  // 🚀 Submit
+  // Submit
   onSubmit(form: NgForm) {
     if (!form.valid) return;
 
@@ -47,8 +47,13 @@ export class CreateCandidate {
           form.resetForm();
         },
         error: (err) => {
-          alert('❌ Failed to create candidate. ' + (err.error?.message || ''));
-          this.errorMessage.set(err.error?.message || '❌ Failed to create candidate.');
+          if (err.error?.message?.includes("email")) {
+            alert("❌ This email ID already exists. Please use another one.");
+            this.errorMessage.set(err.error?.message || 'Use differenet email ID.');
+          } else {
+            alert('❌ Failed to create candidate. ' + (err.error?.message || ''));
+            this.errorMessage.set(err.error?.message || '❌ Failed to create candidate.');
+          }
         }
       });
   }

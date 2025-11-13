@@ -37,5 +37,9 @@ namespace backend.Models
         // Optional remarks or notes
         [StringLength(255)]
         public string? Remarks { get; set; }
+
+        // New fields
+        public string MeetingId { get; set; } = string.Empty;    // GUID
+        public string MeetingLink { get; set; } = string.Empty;  // frontend link
     }
 }
