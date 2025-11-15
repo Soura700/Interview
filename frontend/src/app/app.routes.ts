@@ -27,6 +27,9 @@ import { AssignInterview } from './pages/admin/assign-interview/assign-interview
 import { ViewAssignments } from './pages/admin/view-assignments/view-assignments';
 import { MeetingComponent } from './pages/meeting/meeting';
 import { ReportsComponent } from './pages/admin/reports/reports';
+import { Hello } from './hello/hello';
+import { authGuard } from './guards/auth-guard';
+
 
 
 export const routes: Routes = [
@@ -35,11 +38,17 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'changePassword', component: ChangePasswordComponent },
     { path: 'meeting/:meetingId', component: MeetingComponent },
+    {
+        path: 'hello',
+        component: Hello,
+        canActivate: [authGuard]     // <-- PROTECT PAGE
+    },
 
     //Admin dashboard routes (nested)
     {
         path: 'admin/dashboard',
         component: Dashboard,
+        canActivate: [authGuard],
         children: [
             { path: 'create-interviewer', component: CreateInterviewer },
             { path: 'create-candidate', component: CreateCandidate },

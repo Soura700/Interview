@@ -5,7 +5,7 @@
   <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
   <div *ngIf="successMessage()" class="success">{{ successMessage() }}</div>
 
-  <!-- 🔍 Search Interviewers by Skill & Level -->
+  <!-- Search Interviewers by Skill & Level -->
   <div class="search-box fade-in">
     <input
       type="text"
@@ -20,7 +20,7 @@
     <button class="search-btn" (click)="searchInterviewers()">Search</button>
   </div>
 
-  <!-- 🔎 Search Results (Interviewers) -->
+  <!-- Search Results (Interviewers) -->
   <div *ngIf="searchedInterviewers.length > 0" class="search-results fade-in">
     <h3>👤 Matching Interviewers ({{ searchSkill | uppercase }} - {{ searchLevel }})</h3>
 
@@ -53,7 +53,7 @@
 
   <hr />
 
-  <!-- ✅ Your Existing Code (Candidate + Match + Assignment) -->
+
    <h2>🎯 Assign Interview</h2>
   <div class="form-row">
     <div class="input-group">

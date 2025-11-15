@@ -12,36 +12,43 @@
     <button (click)="loadSuccessBySkill()">Success by Skill</button>
   </div>
 
+  <!-- Loading + Error -->
   <div *ngIf="loading" class="loading">Loading...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
 
-  <!-- Rejected List -->
-  <div class="report-block" *ngIf="rejected.length > 0">
+  <!-- Rejected Candidates -->
+  <div class="report-block" *ngIf="!loading && rejected.length > 0">
     <h3>❌ Rejected Candidates</h3>
     <div class="card" *ngFor="let c of rejected">
       <p><strong>{{ c.fullName }}</strong></p>
       <p>Email: {{ c.email }}</p>
       <p>Skill: {{ c.skillSet }}</p>
+      <p>Status: {{ c.status }}</p>
+      <p>Month: {{ c.month }}</p>
     </div>
   </div>
 
   <!-- Proposal Rejected -->
-  <div class="report-block" *ngIf="proposalRejected.length > 0">
+  <div class="report-block" *ngIf="!loading && proposalRejected.length > 0">
     <h3>🚫 Proposal Rejected</h3>
     <div class="card" *ngFor="let c of proposalRejected">
       <p><strong>{{ c.fullName }}</strong></p>
       <p>Email: {{ c.email }}</p>
       <p>Skill: {{ c.skillSet }}</p>
+      <p>Status: {{ c.status }}</p>
+      <p>Month: {{ c.month }}</p>
     </div>
   </div>
 
-  <!-- Success by Skill -->
-  <div class="report-block" *ngIf="successBySkill.length > 0">
-    <h3>🏆 Successful Candidates ({{ skill }})</h3>
+  <!--- Success by Skill -->
+  <div class="report-block" *ngIf="!loading && successBySkill.length > 0">
+    <h3>Successful Candidates ({{ skill }})</h3>
     <div class="card" *ngFor="let c of successBySkill">
       <p><strong>{{ c.fullName }}</strong></p>
       <p>Email: {{ c.email }}</p>
       <p>Skill: {{ c.skillSet }}</p>
+      <p>Status: {{ c.status }}</p>
+      <p>Month: {{ c.month }}</p>
     </div>
   </div>
 </div>

@@ -10,4 +10,6 @@ public class CreateInterviewerDto
     public int ExperienceYears { get; set; }
 
     public bool IsAvailable { get; set; } = true;
+    // NEW FIELD
+    public string AvailabilityStatus { get; set; } = "Free";
 }

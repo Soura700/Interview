@@ -148,13 +148,13 @@
 
 // app.Run();
 
-
-
 using backend.Interfaces;
 using backend.Services;
 using backend.Data;
 using backend.Hubs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -169,6 +169,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IInterviewerAssignmentService, InterviewerAssignmentService>();
 builder.Services.AddScoped<IReportService, ReportService>(); 
 builder.Services.AddScoped<IVideoMeetingService, VideoMeetingService>();
+builder.Services.AddScoped<IAdminAuthService, AdminAuthService>();
 
 // Add SignalR
 builder.Services.AddSignalR();
@@ -183,13 +184,50 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
-            .SetIsOriginAllowed(_ => true); // For local dev flexibility
+            .SetIsOriginAllowed(_ => true);
     });
 });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// =====================================================
+// ✅ ADD JWT AUTHENTICATION  (ONLY ADDING, NOT CHANGING)
+// =====================================================
+builder.Services.AddAuthentication("JwtAuth")
+.AddJwtBearer("JwtAuth", options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"])
+        )
+    };
+
+    // Required for cookie-based JWT
+    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            if (context.Request.Cookies.ContainsKey("admin_token"))
+            {
+                context.Token = context.Request.Cookies["admin_token"];
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
+builder.Services.AddAuthorization();
+// =====================================================
 
 var app = builder.Build();
 
@@ -204,6 +242,13 @@ app.UseRouting();
 
 // Use CORS before endpoints
 app.UseCors("AllowAngular");
+
+// =====================================================
+// ✅ ADD AUTHENTICATION + AUTHORIZATION MIDDLEWARE
+// =====================================================
+app.UseAuthentication();
+app.UseAuthorization();
+// =====================================================
 
 // Important: Map Hub before running
 app.UseEndpoints(endpoints =>

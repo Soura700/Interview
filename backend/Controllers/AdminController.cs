@@ -23,8 +23,15 @@ namespace backend.Controllers
         [HttpGet("match-candidate/{candidateId}")]
         public async Task<IActionResult> MatchCandidateWithInterviewers(int candidateId, [FromQuery] string interviewLevel = "L1")
         {
-            var result = await _adminService.GetCandidateWithMatchingInterviewersAsync(candidateId, interviewLevel);
-            return Ok(result);
+            try
+            {
+                var result = await _adminService.GetCandidateWithMatchingInterviewersAsync(candidateId, interviewLevel);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
 
 

@@ -23,28 +23,54 @@ export class ReportsComponent implements OnInit {
   loading = false;
   error = "";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
+  // 🔥 FIXED: Added withCredentials for JWT Admin cookie
   loadRejected() {
     this.loading = true;
-    this.http.get(`http://localhost:5147/api/reports/rejected?year=${this.year}&month=${this.month}`)
+    this.http.get(
+      `http://localhost:5147/api/reports/rejected?year=${this.year}&month=${this.month}`,
+      { withCredentials: true }
+    )
       .subscribe({
-        next: (res: any) => { this.rejected = res; this.loading = false; },
-        error: err => { this.error = "Failed to load rejected list"; this.loading = false; }
+        next: (res: any) => {
+          console.log("Rejected raw:", res);
+          console.log("Keys:", Object.keys(res[0]));
+
+          console.log("Rejected candidates:");
+          console.log(res);
+          this.rejected = res;
+          this.loading = false;
+        },
+        error: () => {
+          this.error = "Failed to load rejected list";
+          this.loading = false;
+        }
       });
   }
 
   loadProposalRejected() {
     this.loading = true;
-    this.http.get(`http://localhost:5147/api/reports/proposal-rejected?year=${this.year}&month=${this.month}`)
+    this.http.get(
+      `http://localhost:5147/api/reports/proposal-rejected?year=${this.year}&month=${this.month}`,
+      { withCredentials: true }
+    )
       .subscribe({
-        next: (res: any) => { this.proposalRejected = res; this.loading = false; },
-        error: err => { this.error = "Failed to load proposal rejected"; this.loading = false; }
+        next: (res: any) => {
+          this.proposalRejected = res;
+          this.loading = false;
+        },
+        error: () => {
+          this.error = "Failed to load proposal rejected list";
+          this.loading = false;
+        }
       });
   }
 
+  // 🔥 FIXED: Correct query parameter → skill=
+  // 🔥 FIXED: Added withCredentials
   loadSuccessBySkill() {
     if (!this.skill.trim()) {
       alert("Enter a skill!");
@@ -52,10 +78,20 @@ export class ReportsComponent implements OnInit {
     }
 
     this.loading = true;
-    this.http.get(`http://localhost:5147/api/reports/success-by-skill?year=${this.year}&month=${this.month}&skillSet=${this.skill}`)
+    this.http.get(
+      `http://localhost:5147/api/reports/success-by-skill?year=${this.year}&month=${this.month}&skill=${this.skill}`,
+      { withCredentials: true }
+    )
       .subscribe({
-        next: (res: any) => { this.successBySkill = res; this.loading = false; },
-        error: err => { this.error = "Failed to load successful candidates"; this.loading = false; }
+        next: (res: any) => {
+          this.successBySkill = res;
+          this.loading = false;
+        },
+        error: () => {
+          this.error = "Failed to load successful candidates";
+          this.loading = false;
+        }
       });
   }
+
 }

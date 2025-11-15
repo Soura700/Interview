@@ -22,15 +22,21 @@ namespace backend.Services
             if (candidate == null)
                 throw new Exception("Candidate not found.");
 
+            // Check candidate availability
+            if(candidate.InterviewStatus != "None"){
+                throw new Exception("Candidate already has an assigned or pending interview.");
+            }
+
             // Extract candidate skills
             var candidateSkills = (candidate.SkillSet ?? "")
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                 .Select(s => s.ToLowerInvariant())
                 .ToList();
 
-            // Get all available interviewers of given level
+            // Get all free and available interviewers of given level
             var interviewers = await _context.Interviewers
-                .Where(i => i.InterviewLevel == interviewLevel && i.IsAvailable)
+                .Where(i => i.InterviewLevel == interviewLevel 
+                && i.IsAvailable && i.AvailabilityStatus == "Free")
                 .ToListAsync();
 
             // Match interviewers based on common skills
@@ -73,6 +79,30 @@ namespace backend.Services
         }
 
         //Create Interview Assignment (Admin assigns candidate → interviewer)
+        // public async Task<InterviewAssignment> CreateAssignmentAsync(CreateAssignmentDto dto)
+        // {
+        //     var interviewer = await _context.Interviewers.FindAsync(dto.InterviewerId);
+        //     var candidate = await _context.Candidates.FindAsync(dto.CandidateId);
+
+        //     if (interviewer == null || candidate == null)
+        //         throw new Exception("Invalid interviewer or candidate ID.");
+
+        //     // Create the new assignment
+        //     var assignment = new InterviewAssignment
+        //     {
+        //         InterviewerId = dto.InterviewerId,
+        //         CandidateId = dto.CandidateId,
+        //         InterviewType = dto.InterviewType,
+        //         ScheduledDate = dto.ScheduledDate,
+        //         Status = "Pending" // interviewer will later accept/reject
+        //     };
+
+        //     _context.InterviewAssignments.Add(assignment);
+        //     await _context.SaveChangesAsync();
+
+        //     return assignment;
+        // }
+
         public async Task<InterviewAssignment> CreateAssignmentAsync(CreateAssignmentDto dto)
         {
             var interviewer = await _context.Interviewers.FindAsync(dto.InterviewerId);
@@ -91,11 +121,23 @@ namespace backend.Services
                 Status = "Pending" // interviewer will later accept/reject
             };
 
+            // Add assignment
             _context.InterviewAssignments.Add(assignment);
+
+            // UPDATE INTERVIEWER AVAILABILITY
+            interviewer.AvailabilityStatus = "Pending";
+            // Values: Free → Pending → Booked
+
+            // UPDATE CANDIDATE STATUS
+            candidate.InterviewStatus = "Pending";
+            // Values: None → Pending → Booked / Completed
+
+            // Save changes
             await _context.SaveChangesAsync();
 
             return assignment;
         }
+
 
         // Cancel Assignment (Admin)
         public async Task<string> CancelAssignmentAsync(int assignmentId)
@@ -145,6 +187,7 @@ namespace backend.Services
         {
             return await _context.Interviewers
                 .Where(i =>
+                    i.AvailabilityStatus == "Free" &&
                     i.IsAvailable &&
                     i.InterviewLevel.ToLower() == interviewLevel.ToLower() &&
                     i.SkillSet.ToLower().Contains(skill.ToLower()))
