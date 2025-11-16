@@ -1,0 +1,48 @@
+<div class="assigned-wrapper">
+
+  <h2 class="page-title">📌 Assigned Interviews</h2>
+
+  <div *ngIf="loading()" class="loading">Loading...</div>
+
+  <div *ngIf="noData()" class="empty-box">
+    No interviews assigned to you.
+  </div>
+
+  <div class="cards">
+    <div class="card" *ngFor="let a of assigned()">
+      
+      <h3>{{ a.candidate.fullName }}</h3>
+
+      <p>Email: {{ a.candidate.email }}</p>
+      <p>Experience: {{ a.candidate.experienceYears }} years</p>
+      <p>Skills: {{ a.candidate.skillSet }}</p>
+      <p>Interview Type: {{ a.interviewType }}</p>
+
+      <!-- Resume -->
+      <a *ngIf="a.candidate.resumePath"
+         [href]="a.candidate.resumePath"
+         target="_blank"
+         class="resume-btn">
+         📄 View Resume
+      </a>
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button class="accept" (click)="openDatePicker(a.id)">Accept</button>
+        <button class="reject" (click)="rejectInterview(a.id)">Reject</button>
+      </div>
+
+      <!-- Date Picker (only for chosen card) -->
+      <div *ngIf="showDatePickerFor === a.id" class="date-picker-box">
+        <label>Select Interview Date:</label>
+        <input type="datetime-local" [(ngModel)]="selectedDate" />
+
+        <button class="confirm-btn" (click)="acceptInterview(a.id)">
+          Confirm
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

@@ -34,6 +34,11 @@ namespace backend.Models
         [StringLength(20)]
         public string Status { get; set; } = "Pending";
 
+
+        //NEW FIELD (Interviewer Workflow)
+        public string InterviewerStatus { get; set; } = "Pending";
+        // Pending / Accepted / Rejected
+
         // Optional remarks or notes
         [StringLength(255)]
         public string? Remarks { get; set; }
@@ -41,5 +46,10 @@ namespace backend.Models
         // New fields
         public string MeetingId { get; set; } = string.Empty;    // GUID
         public string MeetingLink { get; set; } = string.Empty;  // frontend link
+
+
+
+
+
     }
 }

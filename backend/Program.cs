@@ -155,6 +155,7 @@ using backend.Hubs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -167,9 +168,11 @@ builder.Services.AddScoped<ICandidateService, CandidateService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IInterviewerAssignmentService, InterviewerAssignmentService>();
-builder.Services.AddScoped<IReportService, ReportService>(); 
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IVideoMeetingService, VideoMeetingService>();
 builder.Services.AddScoped<IAdminAuthService, AdminAuthService>();
+builder.Services.AddScoped<ICandidateAuthService, CandidateAuthService>();
+builder.Services.AddScoped<IInterviewerAuthService, InterviewerAuthService>();
 
 // Add SignalR
 builder.Services.AddSignalR();
@@ -196,37 +199,135 @@ builder.Services.AddSwaggerGen();
 // =====================================================
 // ✅ ADD JWT AUTHENTICATION  (ONLY ADDING, NOT CHANGING)
 // =====================================================
-builder.Services.AddAuthentication("JwtAuth")
-.AddJwtBearer("JwtAuth", options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"])
-        )
-    };
+// builder.Services.AddAuthentication("JwtAuth")
+// .AddJwtBearer("JwtAuth", options =>
+// {
+//     options.TokenValidationParameters = new TokenValidationParameters
+//     {
+//         ValidateIssuer = true,
+//         ValidateAudience = true,
+//         ValidateLifetime = true,
+//         ValidateIssuerSigningKey = true,
+//         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+//         ValidAudience = builder.Configuration["JwtSettings:Audience"],
+//         IssuerSigningKey = new SymmetricSecurityKey(
+//             Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"])
+//         )
+//     };
 
-    // Required for cookie-based JWT
-    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+//     // Required for cookie-based JWT
+//     options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+//     {
+//         OnMessageReceived = context =>
+//         {
+//             if (context.Request.Cookies.ContainsKey("admin_token"))
+//             {
+//                 context.Token = context.Request.Cookies["admin_token"];
+//             }
+//             if (context.Request.Cookies.ContainsKey("candidate_token"))
+//             {
+//                 context.Token = context.Request.Cookies["candidate_token"];
+//             }
+
+//             return Task.CompletedTask;
+//         }
+//     };
+// });
+
+// builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = null;
+    options.DefaultChallengeScheme = null;
+})
+
+    // ADMIN JWT VALIDATION
+    .AddJwtBearer("AdminScheme", options =>
     {
-        OnMessageReceived = context =>
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            if (context.Request.Cookies.ContainsKey("admin_token"))
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtAdmin:Issuer"],
+            ValidAudience = builder.Configuration["JwtAdmin:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtAdmin:Key"])
+            )
+        };
+
+        // read token from admin cookie
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
             {
                 context.Token = context.Request.Cookies["admin_token"];
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
-        }
-    };
-});
+        };
+    })
 
-builder.Services.AddAuthorization();
+        .AddJwtBearer("InterviewerScheme", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtInterviewer:Issuer"],
+            ValidAudience = builder.Configuration["JwtInterviewer:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtInterviewer:Key"])
+            )
+        };
+
+        // read token from admin cookie
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                context.Token = context.Request.Cookies["interviewer_token"];
+                return Task.CompletedTask;
+            }
+        };
+    })
+
+    // CANDIDATE JWT VALIDATION
+    .AddJwtBearer("CandidateScheme", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtCandidate:Issuer"],
+            ValidAudience = builder.Configuration["JwtCandidate:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtCandidate:Key"])
+            )
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                context.Token = context.Request.Cookies["candidate_token"];
+                return Task.CompletedTask;
+            }
+        };
+
+
+    });
+
+
+
+
+// builder.Services.AddAuthorization();
+// builder.Services.AddAuthentication(options =>
+// {
+//     options.DefaultAuthenticateScheme = null;
+//     options.DefaultChallengeScheme = null;
+// });
 // =====================================================
 
 var app = builder.Build();

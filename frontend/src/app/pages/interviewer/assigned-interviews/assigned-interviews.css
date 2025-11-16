@@ -1,0 +1,54 @@
+.assigned-wrapper {
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  border-bottom: 2px solid #0a74ec;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.empty-box {
+  padding: 20px;
+  border-left: 4px solid #999;
+  background: #f4f4f4;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.cards {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+
+.btn-row {
+  margin-top: 12px;
+}
+
+.accept {
+  background: #28a745;
+  padding: 8px 14px;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.reject {
+  background: #e63946;
+  padding: 8px 14px;
+  border: none;
+  color: white;
+  margin-left: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}

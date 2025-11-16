@@ -1,0 +1,70 @@
+.home-wrapper {
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  border-bottom: 2px solid #0a74ec;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.profile-box {
+  background: #f0f5ff;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #d0dfff;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #1b3d6b;
+}
+
+.field input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccd8ff;
+  background: white;
+}
+
+.view-btn {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #28a745;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.no-resume {
+  padding: 8px 12px;
+  background: #fff7cc;
+  border-radius: 6px;
+  display: inline-block;
+  color: #a67c00;
+  font-weight: 600;
+}
+
+.loading {
+  padding: 10px;
+  background: #e8f1ff;
+  border-left: 4px solid #0a74ec;
+  border-radius: 6px;
+}
+
+.error {
+  padding: 10px;
+  background: #ffe2e2;
+  border-left: 4px solid #ff4242;
+  border-radius: 6px;
+}

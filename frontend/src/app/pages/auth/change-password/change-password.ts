@@ -41,7 +41,7 @@ export class ChangePasswordComponent {
     if (this.formData.role === 'Candidate') {
       apiUrl = 'http://localhost:5147/api/Candidate/changepassword';
     } else if (this.formData.role === 'Interviewer') {
-      apiUrl = 'http://localhost:5147/api/Interviewer/changepassword';
+      apiUrl = 'http://localhost:5147/api/Interviewer/change-password';
     } else {
       this.errorMessage.set('Select a role first.');
       this.loading.set(false);

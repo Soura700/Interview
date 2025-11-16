@@ -1,0 +1,24 @@
+<div class="feedback-container">
+
+  <h2 class="title">✍️ Interview Feedback</h2>
+
+  <div *ngIf="loading()" class="loading">Submitting...</div>
+  <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+  <div *ngIf="success()" class="success">Feedback submitted successfully!</div>
+
+  <div class="feedback-box">
+    <label>Your Remarks / Feedback</label>
+
+    <textarea
+      [ngModel]="feedbackText()"
+      (ngModelChange)="feedbackText.set($event)"
+      placeholder="Write your feedback here..."
+      rows="6">
+    </textarea>
+
+    <button class="submit-btn" (click)="submitFeedback()">
+      Submit Feedback
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,63 @@
+<div class="container">
+
+  <h2>Your Interview Updates</h2>
+
+  <div *ngIf="loading()" class="loading">Loading...</div>
+  <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+
+  <!-- If ALL arrays are empty -->
+  <div *ngIf="!loading() 
+              && upcoming().length === 0 
+              && accepted().length === 0 
+              && rejected().length === 0 
+              && completed().length === 0"
+       class="no-data">
+    ❌ No interviews to show.
+  </div>
+
+
+  <!-- UPCOMING -->
+  <div *ngIf="upcoming().length > 0" class="section">
+    <h3>⏳ Upcoming</h3>
+    <div class="card" *ngFor="let item of upcoming()">
+      <p><strong>Interviewer:</strong> {{ item.interviewer.fullName }}</p>
+      <p><strong>Date:</strong> {{ item.scheduledDate | date:'medium' }}</p>
+
+      <button class="accept" (click)="updateStatus(item.id, 'Accepted')">Accept</button>
+      <button class="reject" (click)="updateStatus(item.id, 'Rejected')">Reject</button>
+    </div>
+  </div>
+
+
+  <!-- ACCEPTED -->
+  <div *ngIf="accepted().length > 0" class="section">
+    <h3>✅ Accepted</h3>
+    <div class="card" *ngFor="let item of accepted()">
+      <p><strong>Interviewer:</strong> {{ item.interviewer.fullName }}</p>
+      <p><strong>Date:</strong> {{ item.scheduledDate | date:'medium' }}</p>
+
+      <button class="complete" (click)="updateStatus(item.id, 'Completed')">Mark Completed</button>
+    </div>
+  </div>
+
+
+  <!-- REJECTED -->
+  <div *ngIf="rejected().length > 0" class="section">
+    <h3>❌ Rejected</h3>
+    <div class="card rejected" *ngFor="let item of rejected()">
+      <p><strong>Interviewer:</strong> {{ item.interviewer.fullName }}</p>
+      <p><strong>Date:</strong> {{ item.scheduledDate | date:'medium' }}</p>
+    </div>
+  </div>
+
+
+  <!-- COMPLETED -->
+  <div *ngIf="completed().length > 0" class="section">
+    <h3>🏁 Completed</h3>
+    <div class="card completed" *ngFor="let item of completed()">
+      <p><strong>Interviewer:</strong> {{ item.interviewer.fullName }}</p>
+      <p><strong>Date:</strong> {{ item.scheduledDate | date:'medium' }}</p>
+    </div>
+  </div>
+
+</div>

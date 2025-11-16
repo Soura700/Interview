@@ -1,0 +1,20 @@
+<div class="upload-container">
+
+  <h2 class="title">📄 Upload Resume</h2>
+
+  <div *ngIf="loading()" class="loading">Uploading...</div>
+  <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+  <div *ngIf="success()" class="success">Resume uploaded successfully!</div>
+
+  <div class="upload-box">
+    <label>Select PDF File</label>
+    <input type="file" accept=".pdf" (change)="onFileChange($event)" />
+
+    <button class="upload-btn" (click)="upload()">Upload Resume</button>
+  </div>
+
+  <div *ngIf="resumeUrl()" class="view-box">
+    <a [href]="resumeUrl()" target="_blank" class="view-btn">👁️ View Uploaded Resume</a>
+  </div>
+
+</div>

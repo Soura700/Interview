@@ -9,5 +9,11 @@ namespace backend.Interfaces
 
         // Interviewer accepts or rejects interview
         Task<string> UpdateAssignmentStatusAsync(int assignmentId, string status, string? remarks = null);
+
+        Task<List<InterviewAssignment>> GetAssignmentsByCandidateAsync(int candidateId);
+
+        Task<List<InterviewAssignment>> GetPendingAssignmentsForInterviewer(int interviewerId);
+
+
     }
 }

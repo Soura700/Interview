@@ -1,0 +1,40 @@
+<div class="home-wrapper">
+
+  <h2 class="page-title">🧑‍💼 Candidate Profile</h2>
+
+  <div *ngIf="loading()" class="loading">⏳ Loading...</div>
+  <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+
+  <div class="profile-box">
+    <div class="field">
+      <label>Full Name</label>
+      <input disabled [value]="fullName()" />
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input disabled [value]="email()" />
+    </div>
+
+    <div class="field">
+      <label>Experience (years)</label>
+      <input disabled [value]="experienceYears()" />
+    </div>
+
+    <div class="field">
+      <label>Skill Set</label>
+      <input disabled [value]="skillSet()" />
+    </div>
+
+    <div class="field" *ngIf="resumeUrl()">
+      <label>Resume</label>
+      <a [href]="resumeUrl()" target="_blank" class="view-btn">👁️ View Resume</a>
+    </div>
+
+    <div class="field" *ngIf="!resumeUrl()">
+      <label>Resume</label>
+      <div class="no-resume">No resume uploaded.</div>
+    </div>
+  </div>
+
+</div>

@@ -5,7 +5,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/admin/secure")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = "AdminScheme", Roles = "Admin")]
     public class AdminSecureController : ControllerBase
     {
         [HttpGet("check")]

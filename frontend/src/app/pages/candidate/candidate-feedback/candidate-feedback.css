@@ -1,0 +1,78 @@
+.feedback-container {
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.08);
+  margin-top: 15px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #0a74ec;
+  margin-bottom: 20px;
+}
+
+.loading {
+  padding: 10px;
+  background: #e8f1ff;
+  border-left: 4px solid #0a74ec;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.error {
+  padding: 10px;
+  background: #ffe2e2;
+  border-left: 4px solid #ff4242;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.success {
+  padding: 10px;
+  background: #e1ffe8;
+  border-left: 4px solid #1da851;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  color: #1b7a2c;
+}
+
+.feedback-box {
+  margin-top: 20px;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+textarea {
+  width: 85%;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccd8ff;
+  border-radius: 6px;
+  resize: vertical;
+  background: #f8fbff;
+}
+
+.submit-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #0a74ec;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #085fc2;
+}

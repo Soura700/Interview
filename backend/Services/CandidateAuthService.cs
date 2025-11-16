@@ -1,37 +1,35 @@
+using backend.Data;
 using backend.Interfaces;
 using backend.Models;
-using backend.Data; // IMPORTANT
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using backend.Utilities;
 
 namespace backend.Services
 {
-    public class AdminAuthService : IAdminAuthService
+    public class CandidateAuthService : ICandidateAuthService
     {
+        private readonly AppDbContext _context;
         private readonly IConfiguration _config;
-        private readonly AppDbContext _db;
 
-        public AdminAuthService(IConfiguration config, AppDbContext db)
+        public CandidateAuthService(AppDbContext context, IConfiguration config)
         {
+            _context = context;
             _config = config;
-            _db = db;
         }
 
-        public async Task<Admin?> GetAdminByEmail(string email)
+        public async Task<Candidate?> GetCandidateByEmail(string email)
         {
-            return await _db.Admins.FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Candidates.FirstOrDefaultAsync(c => c.Email == email);
         }
 
         public string HashPassword(string password)
         {
             return PasswordHasher.Hash(password);
         }
-
 
         public bool VerifyPassword(string password, string storedHash)
         {
@@ -43,21 +41,24 @@ namespace backend.Services
             return true;
         }
 
-        public string GenerateJwtToken(Admin admin)
+        public string GenerateJwtToken(Candidate candidate)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtAdmin:Key"]));
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_config["JwtCandidate:Key"])
+            );
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim("id", admin.Id.ToString()),
-                new Claim(ClaimTypes.Email, admin.Email),
-                new Claim(ClaimTypes.Role, admin.Role)
+                new Claim("id", candidate.Id.ToString()),
+                new Claim(ClaimTypes.Email, candidate.Email),
+                new Claim(ClaimTypes.Role, "Candidate")
             };
 
             var token = new JwtSecurityToken(
-                issuer: _config["JwtAdmin:Issuer"],
-                audience: _config["JwtAdmin:Audience"],
+                issuer: _config["JwtCandidate:Issuer"],
+                audience: _config["JwtCandidate:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: creds
