@@ -1,0 +1,137 @@
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <img src="assets/logo-white.png" alt="logo" class="logo" />
+      <span class="brand-name">Interview Portal</span>
+    </div>
+
+    <nav class="nav-links">
+      <a routerLink="/">Home</a>
+      <a routerLink="/about">About</a>
+      <a routerLink="/docs">Docs</a>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- use the component method instead of accessing router directly -->
+      <button class="btn-outline" (click)="goToLogin()">Login</button>
+    </div>
+  </div>
+</header>
+
+<main class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <h1>Get More Done with Interview Portal</h1>
+      <p class="lead">
+        Candidates, Interviewers, and Admins — a single place to view schedules, manage interviews,
+        and keep the hiring process moving.
+      </p>
+
+      <div class="ctas">
+        <!-- all of these go to the login page for now -->
+        <button class="cta-primary" (click)="goToLogin()">I'm a Candidate</button>
+        <button class="cta-ghost" (click)="goToLogin()">I'm an Interviewer</button>
+        <button class="cta-outline" (click)="goToLogin()">I'm an Admin</button>
+      </div>
+
+      <p class="trust">Secure • Simple • Fast</p>
+    </div>
+
+    <div class="hero-right">
+      <div class="illustration">
+        <!-- Background Blobs -->
+        <svg class="blob blob-left" viewBox="0 0 100 100">
+          <path
+            d="M50 0C77.6 0 100 22.4 100 50V100H0C0 44.8 22.4 0 50 0Z"
+            fill="white"
+            opacity="0.12"
+          />
+        </svg>
+
+        <svg class="blob blob-right" viewBox="0 0 100 100">
+          <path
+            d="M50 0C77.6 0 100 22.4 100 50V100H0C0 44.8 22.4 0 50 0Z"
+            fill="white"
+            opacity="0.12"
+          />
+        </svg>
+
+        <!-- Woman -->
+        <div class="woman">
+          <div class="head"></div>
+          <div class="upper-body"></div>
+          <div class="skirt"></div>
+          <div class="shoes"></div>
+
+          <div class="paper">
+            <div class="line"></div>
+            <div class="line small"></div>
+          </div>
+        </div>
+
+        <!-- Man -->
+        <div class="man">
+          <div class="head"></div>
+          <div class="upper-body"></div>
+          <div class="lower-body"></div>
+          <div class="shoes"></div>
+        </div>
+
+        <!-- Monitor -->
+        <div class="monitor">
+          <div class="screen">
+            <div class="chart line-chart">
+              <svg viewBox="0 0 50 20">
+                <path
+                  d="M0 15 C10 5,20 18,30 10,40 2,50 12"
+                  stroke="#377DFF"
+                  stroke-width="1"
+                  fill="none"
+                />
+              </svg>
+              <div class="bar"></div>
+              <div class="bar small"></div>
+            </div>
+
+            <div class="chart pie-chart">
+              <div class="pie"></div>
+            </div>
+
+            <div class="chart area-chart">
+              <svg viewBox="0 0 50 20">
+                <path
+                  d="M0 20 L0 10 C10 5,20 18,30 10,40 2,50 12 L50 20 Z"
+                  fill="#377DFF"
+                  opacity="0.3"
+                />
+                <path
+                  d="M0 10 C10 5,20 18,30 10,40 2,50 12"
+                  stroke="#377DFF"
+                  stroke-width="1"
+                  fill="none"
+                />
+              </svg>
+            </div>
+
+            <div class="chart bar-chart">
+              <div class="title">
+                <div class="tick"></div>
+                <div class="bar"></div>
+              </div>
+              <div class="bars">
+                <div class="b h80"></div>
+                <div class="b h50 blue"></div>
+                <div class="b h90"></div>
+                <div class="b h30 blue"></div>
+                <div class="b h60"></div>
+              </div>
+              <div class="bar footer"></div>
+            </div>
+          </div>
+          <div class="monitor-stand"></div>
+          <div class="monitor-base"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

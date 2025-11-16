@@ -28,6 +28,7 @@ import { ViewAssignments } from './pages/admin/view-assignments/view-assignments
 import { MeetingComponent } from './pages/meeting/meeting';
 import { ReportsComponent } from './pages/admin/reports/reports';
 import { Hello } from './hello/hello';
+
 import { authGuard } from './guards/auth-guard';
 import { candidateGuard } from './guards/candidate-guard';
 import { interviewerGuard } from './guards/interviewer-auth-guard';
@@ -44,6 +45,7 @@ import { InterviewerDashboard } from './pages/interviewer/interviewer-dashboard/
 import { InterviewerHome } from './pages/interviewer/interviewer-home/interviewer-home';
 import { UpcomingInterviews } from './pages/interviewer/upcoming-interviews/upcoming-interviews';
 import { AssignedInterviews } from './pages/interviewer/assigned-interviews/assigned-interviews';
+import { LandingComponent } from './pages/landing/landing';
 
 
 
@@ -53,6 +55,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'changePassword', component: ChangePasswordComponent },
     { path: 'meeting/:meetingId', component: MeetingComponent },
+    { path: 'landing', component: LandingComponent },
     {
         path: 'hello',
         component: Hello,

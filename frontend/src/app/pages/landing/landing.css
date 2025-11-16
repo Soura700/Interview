@@ -1,0 +1,457 @@
+:root{
+  --blue-900: #063a6f;
+  --blue-700: #1e4db2;
+  --accent: #ffd166;
+  --muted: #9aa7c7;
+  --card-white: #ffffff;
+}
+
+*{box-sizing:border-box}
+body, html { height:100%; margin:0; font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif; }
+
+.nav {
+  width:100%;
+  background: linear-gradient(90deg,var(--blue-900),var(--blue-700));
+  color:white;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:30;
+  box-shadow: 0 4px 18px rgba(3,10,30,0.25);
+}
+.nav-inner {
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 20px;
+}
+.brand { display:flex; align-items:center; gap:12px; }
+.logo { width:36px; height:36px; object-fit:contain; }
+.brand-name { font-weight:700; font-size:18px; color:white; }
+
+.nav-links a { color:rgba(255,255,255,0.9); margin:0 12px; text-decoration:none; font-size:14px; }
+.nav-actions { display:flex; gap:10px; align-items:center; }
+.btn-outline { background:transparent; color:white; border:1px solid rgba(255,255,255,0.15); padding:8px 14px; border-radius:8px; cursor:pointer; }
+.btn-primary { background:var(--accent); color:var(--blue-900); border:none; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:600; }
+
+/* Hero */
+.hero {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(180deg, #0b3a69 0%, #144a93 60%);
+  padding-top:84px; /* header height */
+  color:white;
+}
+.hero-inner {
+  max-width:1200px;
+  width:100%;
+  display:flex;
+  gap:40px;
+  align-items:center;
+  justify-content:space-between;
+  padding:48px 20px;
+}
+.hero-left {
+  flex:1 1 50%;
+  max-width:620px;
+}
+.hero-left h1{
+  font-size:42px;
+  margin:0 0 16px;
+  line-height:1.02;
+  letter-spacing:-0.5px;
+  font-weight:800;
+}
+.lead {
+  color:var(--muted);
+  margin-bottom:28px;
+  font-size:16px;
+  max-width:540px;
+}
+
+/* CTAs */
+.ctas { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+.cta-primary{
+  background:#4cc3a1;
+  color:#00303a;
+  border:none;
+  padding:14px 20px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(19,60,50,0.12);
+}
+.cta-ghost {
+  background:transparent;
+  color:white;
+  border:1px solid rgba(255,255,255,0.16);
+  padding:14px 18px;
+  border-radius:10px;
+  cursor:pointer;
+}
+.cta-outline {
+  background:transparent;
+  color:white;
+  border:2px solid rgba(255,255,255,0.24);
+  padding:12px 16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.trust { color:rgba(255,255,255,0.75); margin-top:10px; }
+
+/* Right illustration */
+.hero-right { flex:1 1 45%; display:flex; justify-content:center; align-items:center; }
+.hero-illustration { width:100%; max-width:520px; height:auto; filter:drop-shadow(0 20px 30px rgba(2,10,40,0.5)); }
+
+/* Footer */
+.footer { padding:28px 0; background:transparent; color:rgba(255,255,255,0.75); text-align:center; }
+.footer-inner { max-width:1200px; margin:0 auto; padding:0 20px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-inner { flex-direction:column-reverse; gap:24px; padding:28px 16px; text-align:center; }
+  .hero-left { max-width:unset; }
+  .hero-left h1 { font-size:32px; }
+  .nav-links { display:none; }
+  .hero-illustration { max-width:360px; }
+}
+
+/* ---------------- Illustration Container ---------------- */
+
+.illustration {
+    position: relative;
+    width: 480px;
+    height: 360px;
+    margin: auto;
+}
+
+/* Background Blobs */
+.blob {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+}
+.blob-left {
+    bottom: 0;
+    left: -40px;
+}
+.blob-right {
+    bottom: 20px;
+    right: -20px;
+}
+
+/* ---------------- Characters ---------------- */
+
+.woman, .man {
+    position: absolute;
+    bottom: 0;
+}
+
+.woman {
+    left: 0;
+    width: 130px;
+    height: 240px;
+}
+.man {
+    right: 30px;
+    width: 110px;
+    height: 240px;
+}
+
+/* Woman Details */
+.woman .head {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 36px;
+    background: #e4e7eb;
+    border-radius: 50%;
+}
+
+.woman .upper-body {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 60px;
+    background: #377dff;
+    border-radius: 12px 12px 0 0;
+}
+
+.woman .skirt {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 110px;
+    background: #f9d85e;
+    clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+}
+
+.woman .shoes {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 18px;
+    background: #1f2937;
+    border-radius: 6px 6px 0 0;
+}
+
+.woman .paper {
+    position: absolute;
+    top: 95px;
+    left: -10px;
+    width: 40px;
+    height: 55px;
+    background: white;
+    border-radius: 6px;
+    transform: rotate(-12deg);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.woman .paper .line {
+    width: 24px;
+    height: 4px;
+    background: #d1d5db;
+    margin: 10px auto;
+}
+.woman .paper .line.small {
+    width: 16px;
+}
+
+/* Man Details */
+.man .head {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 36px;
+    background: #d1d5db;
+    border-radius: 50%;
+}
+
+.man .upper-body {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 60px;
+    background: #ffcc54;
+    border-radius: 10px;
+}
+
+.man .lower-body {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 130px;
+    background: #0b3a69;
+    border-radius: 14px 14px 0 0;
+}
+
+.man .shoes {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 46px;
+    height: 16px;
+    background: #1f2937;
+    border-radius: 6px 6px 0 0;
+}
+
+/* ---------------- MONITOR ---------------- */
+
+.monitor {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 300px;
+    height: 220px;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 16px;
+    padding: 10px;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.35);
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    background: #e6f0ff;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
+}
+
+/* each mini chart */
+.chart {
+    background: white;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.bar { height: 6px; background: #e5e7eb; border-radius: 6px; }
+.bar.small { width: 70%; }
+
+.pie {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: conic-gradient(#377DFF 0 45%, #F9C80E 45% 75%, #0A265F 75% 100%);
+}
+
+/* Bar chart */
+.bar-chart .bars {
+    display: flex;
+    align-items: end;
+    gap: 4px;
+    height: 60%;
+}
+.b { width: 8px; background: #bbd5ff; border-radius: 4px; }
+.b.blue { background: #5ba0ff; }
+
+.h80 { height: 80%; }
+.h50 { height: 50%; }
+.h90 { height: 90%; }
+.h30 { height: 30%; }
+.h60 { height: 60%; }
+
+/* monitor stand */
+.monitor-stand {
+    position:absolute;
+    bottom: -12px;
+    left: 50%;
+    width: 50px;
+    height: 40px;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.12);
+    border-left: 1px solid rgba(255,255,255,0.25);
+    border-right: 1px solid rgba(255,255,255,0.25);
+    clip-path: polygon(0 0,100% 0,80% 100%,20% 100%);
+}
+
+.monitor-base {
+    position:absolute;
+    bottom: -20px;
+    left: 50%;
+    width: 140px;
+    height: 12px;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.25);
+}
+
+/* ================================
+   RESPONSIVE FIXES (APPENDED)
+   ================================ */
+
+/* Tablet: stack content vertically and scale illustration */
+@media (max-width: 980px) {
+  .hero-inner {
+    flex-direction: column-reverse;
+    gap: 28px;
+    padding: 28px 16px;
+    text-align: center;
+  }
+
+  .hero-left {
+    max-width: unset;
+  }
+
+  .hero-left h1 {
+    font-size: 34px;
+    line-height: 1.06;
+  }
+
+  /* shrink illustration container and reposition blobs / characters */
+  .illustration {
+    width: 420px;
+    height: 320px;
+    transform: scale(0.92);
+  }
+  .blob-left { left: -28px; bottom: -6px; width: 88px; height: 88px; }
+  .blob-right { right: -8px; bottom: 6px; width: 64px; height: 64px; }
+
+  .woman { left: 8px; transform: scale(0.9); }
+  .man { right: 8px; transform: scale(0.9); }
+
+  .monitor {
+    width: 270px;
+    height: 200px;
+  }
+
+  .monitor-base { width: 120px; }
+  .monitor-stand { width: 44px; height: 36px; }
+}
+
+/* Mobile: stack, reduce sizes, and make CTAs full width */
+@media (max-width: 600px) {
+  .hero-inner {
+    padding: 20px 14px;
+    gap: 18px;
+  }
+
+  .hero-left h1 {
+    font-size: 26px;
+  }
+
+  .lead {
+    font-size: 14px;
+  }
+
+  /* make the illustration compact */
+  .illustration {
+    width: 300px;
+    height: 220px;
+    transform: scale(0.8);
+    margin: 0 auto;
+  }
+
+  .blob-left { left: -12px; bottom: -8px; width: 64px; height: 64px; }
+  .blob-right { right: -8px; bottom: 0; width: 52px; height: 52px; }
+
+  .woman { transform: scale(0.78); left: 6px; bottom: 2px; }
+  .man { transform: scale(0.78); right: 6px; bottom: 2px; }
+
+  .monitor {
+    width: 220px;
+    height: 160px;
+    padding: 8px;
+  }
+
+  .screen { gap: 6px; }
+
+  /* CTAs stack and become full-width-ish */
+  .ctas {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+  }
+  .cta-primary, .cta-ghost, .cta-outline {
+    width: 88%;
+    text-align: center;
+  }
+
+  .monitor-base { width: 100px; left: 50%; transform: translateX(-50%); }
+  .monitor-stand { width: 36px; height: 32px; left: 50%; transform: translateX(-50%); }
+}
