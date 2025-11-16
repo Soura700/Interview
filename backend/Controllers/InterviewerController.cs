@@ -62,10 +62,28 @@ namespace InterviewManagementSystem.Controllers
         public async Task<IActionResult> UpdateAssignmentStatus(
            int assignmentId,
            [FromQuery] string status,
+           [FromQuery] DateTime? scheduledDate = null,
            [FromQuery] string? remarks = null)
         {
-            var message = await _assignmentService.UpdateAssignmentStatusAsync(assignmentId, status, remarks);
+            var message = await _assignmentService.UpdateAssignmentStatusAsync(assignmentId, status, scheduledDate, remarks);
             return Ok(new { Message = message });
         }
+
+        //Interview result submission
+        [HttpPut("assignments/{assignmentId}/result")]
+        public async Task<IActionResult> UpdateInterviewResult(
+            int assignmentId,
+            [FromQuery] string interviewerStatus,
+            [FromQuery] string? remarks = null)
+        {
+            var message = await _assignmentService.UpdateInterviewResultAsync(
+                assignmentId, 
+                interviewerStatus, 
+                remarks
+            );
+
+            return Ok(new { Message = message });
+        }
+
     }
 }

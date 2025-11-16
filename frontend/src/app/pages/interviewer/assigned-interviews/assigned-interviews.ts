@@ -153,6 +153,8 @@ export class AssignedInterviews implements OnInit {
       return;
     }
 
+    const isoDate = new Date(this.selectedDate).toISOString();
+
     this.http.put(
       `http://localhost:5147/api/interviewer/assignments/${assignmentId}/status`,
       {},

@@ -24,7 +24,7 @@ namespace backend.Services
         }
 
         // 🔹 Update assignment status (Accept / Reject)
-        public async Task<string> UpdateAssignmentStatusAsync(int assignmentId, string status, string? remarks = null)
+        public async Task<string> UpdateAssignmentStatusAsync(int assignmentId, string status, DateTime? scheduledDate = null, string? remarks = null)
         {
             var assignment = await _context.InterviewAssignments.FindAsync(assignmentId);
             if (assignment == null)
@@ -34,11 +34,16 @@ namespace backend.Services
             if (assignment.Status != "Pending")
                 return "Only pending assignments can be updated.";
 
-            if (status != "Accepted" && status != "Rejected")
-                return "Invalid status. Use Accepted or Rejected.";
-
             assignment.Status = status;
-            assignment.Remarks = remarks;
+
+            if (status == "Accepted" && scheduledDate.HasValue)
+            {
+                assignment.ScheduledDate = scheduledDate.Value;
+
+                var interviewer = await _context.Interviewers.FindAsync(assignment.InterviewerId);
+                if (interviewer != null)
+                    interviewer.IsAvailable = false;
+            }
 
             // If rejected — mark interviewer available again
             if (status == "Rejected")
@@ -92,6 +97,22 @@ namespace backend.Services
                 .ToListAsync();
         }
 
+        public async Task<string> UpdateInterviewResultAsync(
+            int assignmentId,
+            string interviewerStatus,
+            string? remarks = null)
+        {
+            var assignment = await _context.InterviewAssignments.FindAsync(assignmentId);
+            if (assignment == null)
+                return "Assignment not found.";
+        
+            assignment.InterviewerStatus = interviewerStatus;
+            assignment.Remarks = remarks;
+
+        
+            await _context.SaveChangesAsync();
+            return "Interview result updated.";
+        }
 
 
         public async Task<List<InterviewAssignment>> GetAssignmentsByCandidateAsync(int candidateId)
