@@ -51,7 +51,7 @@ export class UpcomingInterviews implements OnInit {
     this.http.get<any[]>(`http://localhost:5147/api/Interviewer/assignments/${interviewerId}`)
       .subscribe({
         next: (res) => {
-          const accepted = res.filter(item => item.status === "Accepted");
+          const accepted = res.filter(item => item.interviewerStatus === "Accepted");
 
           // Add UI fields
           accepted.forEach(a => {
@@ -89,7 +89,7 @@ export class UpcomingInterviews implements OnInit {
       {},
       {
         params: {
-          interviewerStatus: result,
+          status: result,
           remarks: remarks
         }
       }

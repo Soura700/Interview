@@ -61,11 +61,11 @@ namespace InterviewManagementSystem.Controllers
         [HttpPut("assignments/{assignmentId}/status")]
         public async Task<IActionResult> UpdateAssignmentStatus(
            int assignmentId,
-           [FromQuery] string status,
+           [FromQuery] string interviewerStatus,
            [FromQuery] DateTime? scheduledDate = null,
            [FromQuery] string? remarks = null)
         {
-            var message = await _assignmentService.UpdateAssignmentStatusAsync(assignmentId, status, scheduledDate, remarks);
+            var message = await _assignmentService.UpdateAssignmentStatusAsync(assignmentId, interviewerStatus, scheduledDate, remarks);
             return Ok(new { Message = message });
         }
 
@@ -73,12 +73,12 @@ namespace InterviewManagementSystem.Controllers
         [HttpPut("assignments/{assignmentId}/result")]
         public async Task<IActionResult> UpdateInterviewResult(
             int assignmentId,
-            [FromQuery] string interviewerStatus,
+            [FromQuery] string status,
             [FromQuery] string? remarks = null)
         {
             var message = await _assignmentService.UpdateInterviewResultAsync(
                 assignmentId, 
-                interviewerStatus, 
+                status, 
                 remarks
             );
 

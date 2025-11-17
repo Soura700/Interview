@@ -29,9 +29,15 @@
           required
           placeholder="Enter your password"
         />
-        <span class="toggle-eye" (click)="togglePasswordVisibility()">
-          {{ showPassword() ? '🙈' : '👁️' }}
-        </span>
+
+        <!-- <span class="toggle-eye" (click)="togglePasswordVisibility()">
+          {{ showPassword() ? '🙈' : '👁' }}
+        </span> -->
+            <mat-icon class="toggle-eye" (click)="togglePasswordVisibility()">
+  {{ showPassword() ? 'visibility_off' : 'visibility' }}
+</mat-icon>
+
+
       </div>
 
       <!-- 🧑‍💼 Role Selection -->

@@ -8,10 +8,12 @@ namespace backend.Services
     public class InterviewerAssignmentService : IInterviewerAssignmentService
     {
         private readonly AppDbContext _context;
+        private readonly IEmailService _emailService;
 
-        public InterviewerAssignmentService(AppDbContext context)
+        public InterviewerAssignmentService(AppDbContext context,IEmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         // 🔹 Get all assignments for this interviewer
@@ -24,19 +26,19 @@ namespace backend.Services
         }
 
         // 🔹 Update assignment status (Accept / Reject)
-        public async Task<string> UpdateAssignmentStatusAsync(int assignmentId, string status, DateTime? scheduledDate = null, string? remarks = null)
+        public async Task<string> UpdateAssignmentStatusAsync(int assignmentId, string interviewerStatus, DateTime? scheduledDate = null, string? remarks = null)
         {
             var assignment = await _context.InterviewAssignments.FindAsync(assignmentId);
             if (assignment == null)
                 return "Assignment not found.";
 
             // Only allow update if pending
-            if (assignment.Status != "Pending")
+            if (assignment.InterviewerStatus != "Pending")
                 return "Only pending assignments can be updated.";
 
-            assignment.Status = status;
+            assignment.InterviewerStatus = interviewerStatus;
 
-            if (status == "Accepted" && scheduledDate.HasValue)
+            if (interviewerStatus == "Accepted" && scheduledDate.HasValue)
             {
                 assignment.ScheduledDate = scheduledDate.Value;
 
@@ -46,15 +48,82 @@ namespace backend.Services
             }
 
             // If rejected — mark interviewer available again
-            if (status == "Rejected")
+            if (interviewerStatus == "Rejected")
             {
                 var interviewer = await _context.Interviewers.FindAsync(assignment.InterviewerId);
                 if (interviewer != null)
                     interviewer.IsAvailable = true;
             }
 
+            // --- Email sending (added) ---
+            // Only send emails when assignment was accepted AND a scheduled date is present.
+            // This keeps behavior safe (no emails for simple status flips without a date).
+            if (interviewerStatus == "Accepted")
+            {
+
+                // Console.writeLine("Preparing to send emails for accepted interview...");
+                // check ScheduledDate presence; adjust check if ScheduledDate is nullable in your model
+                var hasDate =
+                    assignment.ScheduledDate != default(DateTime); // if ScheduledDate is DateTime
+                                                                   // OR if ScheduledDate is nullable: assignment.ScheduledDate.HasValue
+
+                if (hasDate)
+                {
+                    try
+                    {
+                        // load related entities for email content
+                        var interviewer = await _context.Interviewers.FindAsync(assignment.InterviewerId);
+                        var candidate = await _context.Candidates.FindAsync(assignment.CandidateId);
+                        //  var meetingLink = assignment.MeetingLink; //gives https
+                        var meetingLink = assignment.MeetingLink?.Replace("https://", "http://");
+
+                        var formattedDate = assignment.ScheduledDate.ToString("f"); // change format if needed
+
+                        // Candidate email
+                        if (candidate != null && !string.IsNullOrWhiteSpace(candidate.Email))
+                        {
+                            var candSubject = $"Interview Scheduled on {formattedDate}";
+                            var candBody =
+                                $"Hi {candidate.FullName},\n\n" +
+                                $"Your interview has been scheduled.\n\n" +
+                                $"Interviewer: {interviewer?.FullName}\n" +
+                                $"Scheduled Date: {formattedDate}\n\n" +
+                                 $"Meeting Link: {meetingLink}\n\n" +
+                                "Please be available at the scheduled time.\n\n" +
+                                "Regards,\nInterview Management System";
+
+                            await _emailService.SendEmailAsync(candidate.Email, candSubject, candBody);
+                        }
+
+                        // Interviewer email (confirmation)
+                        if (interviewer != null && !string.IsNullOrWhiteSpace(interviewer.Email))
+                        {
+                            var intvSubject = $"Interview Confirmed for {formattedDate}";
+                            var intvBody =
+                                $"Hi {interviewer.FullName},\n\n" +
+                                $"You have confirmed the interview.\n\n" +
+                                $"Candidate: {candidate?.FullName}\n" +
+                                $"Scheduled Date: {formattedDate}\n\n" +
+
+
+                                $"Meeting Link: {meetingLink}\n\n" +
+
+                                "Thank you.\n\n" +
+                                "Regards,\nInterview Management System";
+
+                            await _emailService.SendEmailAsync(interviewer.Email, intvSubject, intvBody);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Swallow the exception to keep the original DB behavior unchanged.
+                        // But log it if you have a logger, e.g. _logger.LogError(ex, "Email send failed");
+                    }
+                }
+
+            }
             await _context.SaveChangesAsync();
-            return $"Interview {status} successfully.";
+            return $"Interview {interviewerStatus} successfully.";
         }
 
         // 🔹 UPCOMING Interviews (Pending or Accepted & in future)
@@ -64,7 +133,7 @@ namespace backend.Services
                 .Include(a => a.Candidate)
                 .Where(a =>
                     a.InterviewerId == interviewerId &&
-                    (a.Status == "Pending" || a.Status == "Accepted") &&
+                    (a.InterviewerStatus == "Pending" || a.InterviewerStatus == "Accepted") &&
                     a.ScheduledDate >= DateTime.UtcNow
                 )
                 .OrderBy(a => a.ScheduledDate)
@@ -99,17 +168,17 @@ namespace backend.Services
 
         public async Task<string> UpdateInterviewResultAsync(
             int assignmentId,
-            string interviewerStatus,
+            string status,
             string? remarks = null)
         {
             var assignment = await _context.InterviewAssignments.FindAsync(assignmentId);
             if (assignment == null)
                 return "Assignment not found.";
-        
-            assignment.InterviewerStatus = interviewerStatus;
+
+            assignment.Status = status;
             assignment.Remarks = remarks;
 
-        
+
             await _context.SaveChangesAsync();
             return "Interview result updated.";
         }
