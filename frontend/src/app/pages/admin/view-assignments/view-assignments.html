@@ -20,15 +20,15 @@
       <div class="card-body">
         <div class="candidate-section">
           <h4>🎓 Candidate Info</h4>
-          <p><strong>Email:</strong> {{ a.candidateEmail }}</p>
-          <p><strong>Skills:</strong> {{ a.candidateSkill }}</p>
+          <p><strong>Email:</strong> {{ a.candidate.email }}</p>
+          <p><strong>Skills:</strong> {{ a.candidate.skillSet }}</p>
         </div>
 
         <div class="interviewer-section">
           <h4>🧑‍💼 Interviewer Info</h4>
-          <p><strong>Name:</strong> {{ a.interviewerName }}</p>
-          <p><strong>Email:</strong> {{ a.interviewerEmail }}</p>
-          <p><strong>Level:</strong> {{ a.interviewerLevel }}</p>
+          <p><strong>Name:</strong> {{ a.interviewer.fullName }}</p>
+          <p><strong>Email:</strong> {{ a.interviewer.email }}</p>
+          <p><strong>Level:</strong> {{ a.interviewer.interviewLevel }}</p>
         </div>
 
         <div class="extra-section">
