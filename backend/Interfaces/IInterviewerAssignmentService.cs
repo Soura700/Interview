@@ -8,7 +8,7 @@ namespace backend.Interfaces
         Task<List<InterviewAssignment>> GetAssignmentsByInterviewerAsync(int interviewerId);
 
         // Interviewer accepts or rejects interview
-        Task<string> UpdateAssignmentStatusAsync(int assignmentId, string status,DateTime? scheduledDate = null, string? remarks = null);
+        Task<string> UpdateAssignmentStatusAsync(int assignmentId, string interviewerStatus,DateTime? scheduledDate = null, string? remarks = null);
 
         Task<List<InterviewAssignment>> GetAssignmentsByCandidateAsync(int candidateId);
 
@@ -16,7 +16,7 @@ namespace backend.Interfaces
 
         Task<string> UpdateInterviewResultAsync(
             int assignmentId, 
-            string interviewerStatus, 
+            string status, 
             string? remarks = null
         );
 

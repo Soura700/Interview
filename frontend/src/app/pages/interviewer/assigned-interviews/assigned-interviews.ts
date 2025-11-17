@@ -160,7 +160,7 @@ export class AssignedInterviews implements OnInit {
       {},
       {
         params: {
-          status: "Accepted",
+          interviewerStatus: "Accepted",
           scheduledDate: this.selectedDate
         },
         withCredentials: true
@@ -180,7 +180,7 @@ export class AssignedInterviews implements OnInit {
       {},
       {
         params: {
-          status: "Rejected"
+          interviewerStatus: "Rejected"
         },
         withCredentials: true
       }
