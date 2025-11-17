@@ -51,7 +51,7 @@ export class UpcomingInterviews implements OnInit {
     this.http.get<any[]>(`http://localhost:5147/api/Interviewer/assignments/${interviewerId}`)
       .subscribe({
         next: (res) => {
-          const accepted = res.filter(item => item.interviewerStatus === "Accepted");
+          const accepted = res.filter(item => item.status === "Pending" && item.interviewerStatus === "Accepted");
 
           // Add UI fields
           accepted.forEach(a => {
@@ -78,6 +78,12 @@ export class UpcomingInterviews implements OnInit {
     window.open(link, "_blank");
   }
 
+  removeCard(assignmentId: number) {
+    const updated = this.upcoming().filter(a => a.id !== assignmentId);
+    this.upcoming.set(updated);
+    this.noData.set(updated.length === 0);
+  }
+
   submitInterviewResult(id: number, result: string, remarks: string) {
     if (!result) {
       alert("Please select result before submitting.");
@@ -95,6 +101,8 @@ export class UpcomingInterviews implements OnInit {
       }
     ).subscribe(() => {
       alert("Interview result updated!");
+
+      this.removeCard(id);
     });
   }
 }

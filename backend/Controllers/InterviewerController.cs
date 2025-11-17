@@ -85,5 +85,17 @@ namespace InterviewManagementSystem.Controllers
             return Ok(new { Message = message });
         }
 
+        [HttpGet("assignments/completed/{interviewerId}")]
+        public async Task<IActionResult> GetCompletedInterviews(int interviewerId)
+        {
+            var result = await _assignmentService.GetCompletedInterviewsAsync(interviewerId);
+
+            if (result == null || !result.Any())
+                return NotFound(new { Message = "No completed interviews found." });
+
+            return Ok(result);
+        }
+
+
     }
 }

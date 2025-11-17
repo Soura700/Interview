@@ -9,10 +9,15 @@ namespace backend.Controllers;
 public class CandidateController : ControllerBase
 {
     private readonly ICandidateService _candidateService;
+    private readonly IInterviewerAssignmentService _assignmentService;
 
-    public CandidateController(ICandidateService candidateService)
+
+    public CandidateController(
+        ICandidateService candidateService,
+        IInterviewerAssignmentService assignmentService)
     {
         _candidateService = candidateService;
+        _assignmentService = assignmentService;
     }
 
 
@@ -86,5 +91,17 @@ public class CandidateController : ControllerBase
             resumePath = candidate.ResumePath
         });
     }
+
+    [HttpGet("assignment/{candidateId}/schedule")]
+    public async Task<IActionResult> GetCandidateSchedule(int candidateId)
+    {
+        var result = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
+
+        if (result == null || !result.Any())
+            return NotFound(new { Message = "No interview scheduled." });
+
+        return Ok(result);
+    }
+
 
 }
