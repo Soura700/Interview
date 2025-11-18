@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule,Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -11,10 +12,19 @@ import { RouterModule,Router } from '@angular/router';
   styleUrl: './candidate-dashboard.css',
 })
 export class CandidateDashboard {
-  constructor(private router: Router) {}
+  constructor(private router: Router , private http: HttpClient) { }
 
   logout() {
-    localStorage.clear();
-    this.router.navigate(['/login']);
+    this.http.post('http://localhost:5147/api/candidate/auth/logout', {}, { withCredentials: true })
+      .subscribe({
+        next: (res: any) => {
+          console.log('Logout successful:', res);
+          localStorage.clear(); // clear local storage
+          this.router.navigate(['/login']); // redirect to login page
+        },
+        error: (err) => {
+          console.error('Logout error:', err);
+        }
+      });
   }
 }

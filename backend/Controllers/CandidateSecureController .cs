@@ -219,6 +219,29 @@ namespace backend.Controllers
             });
         }
 
+        //interview-status update in candidate portal
+        [HttpGet("assignment/schedule")]
+        public async Task<IActionResult> GetCandidateSchedule()
+        {
+            // Ensure user authenticated
+            if (!User.Identity.IsAuthenticated)
+                return Unauthorized("Candidate not authenticated");
+
+            // Extract candidate ID from JWT
+            var idClaim = User.FindFirst("id")?.Value;
+            if (idClaim == null)
+                return Unauthorized("Candidate ID missing in token");
+
+            int candidateId = int.Parse(idClaim);
+
+            // Fetch assignments
+            var assignments = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
+
+            if (assignments == null || !assignments.Any())
+                return NotFound(new { Message = "No interview scheduled." });
+
+            return Ok(assignments);
+        }
 
     }
 }

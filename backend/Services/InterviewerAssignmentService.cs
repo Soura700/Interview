@@ -147,7 +147,7 @@ namespace backend.Services
                 .Include(a => a.Candidate)
                 .Where(a =>
                     a.InterviewerId == interviewerId &&
-                    a.Status == "Completed"
+                    a.Status != "Pending"
                 )
                 .OrderByDescending(a => a.ScheduledDate)
                 .ToListAsync();

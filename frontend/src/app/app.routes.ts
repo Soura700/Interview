@@ -45,6 +45,7 @@ import { InterviewerDashboard } from './pages/interviewer/interviewer-dashboard/
 import { InterviewerHome } from './pages/interviewer/interviewer-home/interviewer-home';
 import { UpcomingInterviews } from './pages/interviewer/upcoming-interviews/upcoming-interviews';
 import { AssignedInterviews } from './pages/interviewer/assigned-interviews/assigned-interviews';
+import { CompletedInterviews } from './pages/interviewer/completed-interviews/completed-interviews';
 import { LandingComponent } from './pages/landing/landing';
 
 
@@ -101,6 +102,7 @@ export const routes: Routes = [
             { path: 'interviewer-home', component: InterviewerHome },
             { path: 'upcoming-interviews', component: UpcomingInterviews },
             { path: 'assigned-interviews', component: AssignedInterviews },
+            { path: 'completed-interviews', component: CompletedInterviews},
             { path: '', redirectTo: 'interviewer-home', pathMatch: 'full' } // default page
         ]
     },

@@ -12,11 +12,6 @@ public interface ICandidateService
     Task<Candidate?> GetCandidateByEmailAsync(string email);
     Task UpdateResumePathAsync(Candidate candidate);
 
-    // 
-    // 
-    // 
     Task<Candidate?> GetCandidateByIdAsync(int id);
-
-
 
 }

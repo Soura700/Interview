@@ -140,15 +140,19 @@ public class CandidateService : ICandidateService
         _context.Candidates.Update(candidate);
         await _context.SaveChangesAsync();
     }
-
-
-    // 
-    // 
-    // 
-    // 
+ 
 
     public async Task<Candidate?> GetCandidateByIdAsync(int id)
     {
         return await _context.Candidates.FirstOrDefaultAsync(c => c.Id == id);
     }
+
+    public async Task<List<InterviewAssignment>> GetAssignmentsByCandidateAsync(int candidateId)
+    {
+        return await _context.InterviewAssignments
+            .Include(a => a.Interviewer)
+            .Where(a => a.CandidateId == candidateId)
+            .ToListAsync();
+    }
+
 }

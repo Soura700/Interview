@@ -20,5 +20,11 @@ namespace backend.Interfaces
             string? remarks = null
         );
 
+        Task<List<InterviewAssignment>> GetCompletedInterviewsAsync(int interviewerId);
+
+        //Task<List<InterviewAssignment>> GetAssignmentsByCandidateAsync(int candidateId);
+
+
+
     }
 }

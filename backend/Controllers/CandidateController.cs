@@ -9,10 +9,15 @@ namespace backend.Controllers;
 public class CandidateController : ControllerBase
 {
     private readonly ICandidateService _candidateService;
+    private readonly IInterviewerAssignmentService _assignmentService;
 
-    public CandidateController(ICandidateService candidateService)
+
+    public CandidateController(
+        ICandidateService candidateService,
+        IInterviewerAssignmentService assignmentService)
     {
         _candidateService = candidateService;
+        _assignmentService = assignmentService;
     }
 
 

@@ -7,60 +7,61 @@ import { HttpClient } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './interview-update.html',
-  styleUrl: './interview-update.css'
+  styleUrls: ['./interview-update.css']
 })
 export class InterviewUpdate implements OnInit {
 
   loading = signal(false);
-  errorMessage = signal<string | null>(null);
-
-  upcoming = signal<any[]>([]);
-  accepted = signal<any[]>([]);
-  rejected = signal<any[]>([]);
-  completed = signal<any[]>([]);
+  schedule = signal<any[]>([]);
+  noData = signal(false);
+  assigned = signal<any[]>([]);
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.fetchInterviewDetails();
+    this.fetchAssigned(),
+    this.fetchSchedule();
   }
 
-  fetchInterviewDetails() {
+  fetchAssigned() {
     this.loading.set(true);
-    this.errorMessage.set(null);
 
-    this.http.get('http://localhost:5147/api/candidate/secure/interviews', {
+    this.http.get<any[]>("http://localhost:5147/api/candidate/secure/profile", {
       withCredentials: true
-    })
-    .subscribe({
-      next: (res: any) => {
-        this.upcoming.set(res.upcoming ?? []);
-        this.accepted.set(res.accepted ?? []);
-        this.rejected.set(res.rejected ?? []);
-        this.completed.set(res.completed ?? []);
+    }).subscribe({
+      next: (res) => {
+        this.assigned.set(res);
+        this.noData.set(res.length === 0);
         this.loading.set(false);
       },
       error: () => {
-        this.errorMessage.set('Failed to load interview details.');
+        this.noData.set(true);
         this.loading.set(false);
       }
     });
+    console.log(this.assigned());
   }
 
-  updateStatus(id: number, status: string) {
-    this.http.put(
-      `http://localhost:5147/api/Candidate/update-status/${id}?status=${status}`,
-      {},
-      { withCredentials: true }
-    )
-    .subscribe({
-      next: () => {
-        alert("Status updated!");
-        this.fetchInterviewDetails();
-      },
-      error: () => {
-        alert("Failed to update status.");
-      }
-    });
-  }
+  fetchSchedule() {
+    //console.log(candidateId);
+     this.loading.set(true);
+    this.http.get<any[]>(`http://localhost:5147/api/candidate/secure/assignment/schedule`,{withCredentials: true})
+       .subscribe({
+         next: (res) => {
+           this.schedule.set(res);
+           this.noData.set(res.length === 0);
+           this.loading.set(false);
+         },
+         error: () => {
+           this.noData.set(true);
+           this.loading.set(false);
+         }
+       });
+   }
+  openMeeting(link: string) {
+     if (!link) {
+       alert("Meeting link not available.");
+       return;
+     }    window.open(link, "_blank");
+   }
 }
