@@ -57,3 +57,83 @@ video {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   text-align: left;
 }
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.controls button {
+  background: #2d2d2d;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.controls button:hover {
+  background: #444;
+}
+
+.controls .material-icons {
+  color: white;
+  font-size: 28px;
+}
+
+button.leave {
+  background: #d9534f;
+}
+
+button.leave:hover {
+  background: #c9302c;
+}
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  background: #e9eef7;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Big Video */
+.remote-video-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.remote-video-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* Small PIP Video */
+.local-video-box {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 220px;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.local-video-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

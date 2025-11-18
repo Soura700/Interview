@@ -140,12 +140,7 @@ public class CandidateService : ICandidateService
         _context.Candidates.Update(candidate);
         await _context.SaveChangesAsync();
     }
-
-
-    // 
-    // 
-    // 
-    // 
+ 
 
     public async Task<Candidate?> GetCandidateByIdAsync(int id)
     {

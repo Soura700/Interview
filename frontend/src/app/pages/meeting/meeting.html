@@ -2,23 +2,55 @@
   <h2>🎥 Interview Meeting</h2>
   <p class="meeting-id">Meeting ID: {{ meetingId }}</p>
 
-  <div class="video-grid">
-    <!-- Your local camera -->
+  <!-- <div class="video-grid">
+    
     <div class="video-box">
       <h4>You</h4>
       <video #localVideo autoplay playsinline muted></video>
     </div>
 
-    <!-- Remote participant -->
+   
     <div class="video-box">
       <h4>Other Participant</h4>
       <video #remoteVideo autoplay playsinline></video>
     </div>
+  </div> -->
+  <div class="video-wrapper">
+
+  <!-- Big: Other Participant -->
+  <div class="remote-video-box">
+    <h4>Other Participant</h4>
+    <video #remoteVideo autoplay playsinline></video>
   </div>
 
-  <div class="controls">
+  <!-- Small: You -->
+  <div class="local-video-box">
+    <video #localVideo autoplay playsinline muted></video>
+  </div>
+
+</div>
+
+
+  <!-- <div class="controls">
     <button (click)="toggleMic()">{{ micOn ? 'Mute Mic' : 'Unmute Mic' }}</button>
     <button (click)="toggleCamera()">{{ camOn ? 'Turn Off Cam' : 'Turn On Cam' }}</button>
     <button class="leave" (click)="leaveCall()">Leave Meeting</button>
-  </div>
+  </div> -->
+  <div class="controls">
+  <button (click)="toggleMic()">
+    <span class="material-icons">
+      {{ micOn ? 'mic' : 'mic_off' }}
+    </span>
+  </button>
+
+  <button (click)="toggleCamera()">
+    <span class="material-icons">
+      {{ camOn ? 'videocam' : 'videocam_off' }}
+    </span>
+  </button>
+
+  <button class="leave" (click)="leaveCall()">
+    <span class="material-icons">call_end</span>
+  </button>
+</div>
 </div>

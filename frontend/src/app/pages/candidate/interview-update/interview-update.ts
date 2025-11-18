@@ -7,73 +7,61 @@ import { HttpClient } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './interview-update.html',
-  styleUrl: './interview-update.css'
+  styleUrls: ['./interview-update.css']
 })
 export class InterviewUpdate implements OnInit {
 
   loading = signal(false);
-  upcoming = signal<any[]>([]);
+  schedule = signal<any[]>([]);
   noData = signal(false);
+  assigned = signal<any[]>([]);
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadCandidateId();
+    this.fetchAssigned(),
+    this.fetchSchedule();
   }
 
-  /** Load candidateId from secure endpoint or localStorage */
-  loadCandidateId() {
-    const storedId = localStorage.getItem("candidateId");
+  fetchAssigned() {
+    this.loading.set(true);
 
-    if (storedId) {
-      this.fetchUpcoming(storedId);
-      return;
-    }
-
-    this.http.get<any>("http://localhost:5147/api/candidate/secure/profile", {
+    this.http.get<any[]>("http://localhost:5147/api/candidate/secure/profile", {
       withCredentials: true
     }).subscribe({
-      next: (profile) => {
-        if (profile?.id) {
-          localStorage.setItem("candidateId", profile.id.toString());
-          this.fetchUpcoming(profile.id);
-        }
+      next: (res) => {
+        this.assigned.set(res);
+        this.noData.set(res.length === 0);
+        this.loading.set(false);
       },
       error: () => {
         this.noData.set(true);
+        this.loading.set(false);
       }
     });
+    console.log(this.assigned());
   }
 
-  /** Fetch interview schedule for candidate */
-  fetchUpcoming(candidateId: string | number) {
-    this.loading.set(true);
-
-    this.http.get<any[]>(`http://localhost:5147/api/candidate/assignments/${candidateId}`)
-      .subscribe({
-        next: (res) => {
-
-          // Filter upcoming or active interviews
-          const active = res.filter(item =>
-            item.status === "Accepted" || item.status === "Completed"
-          );
-
-          this.upcoming.set(active);
-          this.noData.set(active.length === 0);
-          this.loading.set(false);
-        },
-        error: () => {
-          this.noData.set(true);
-          this.loading.set(false);
-        }
-      });
-  }
-
+  fetchSchedule() {
+    //console.log(candidateId);
+     this.loading.set(true);
+    this.http.get<any[]>(`http://localhost:5147/api/candidate/secure/assignment/schedule`,{withCredentials: true})
+       .subscribe({
+         next: (res) => {
+           this.schedule.set(res);
+           this.noData.set(res.length === 0);
+           this.loading.set(false);
+         },
+         error: () => {
+           this.noData.set(true);
+           this.loading.set(false);
+         }
+       });
+   }
   openMeeting(link: string) {
-    if (!link) {
-      alert("Meeting link not available.");
-      return;
-    }
-    window.open(link, "_blank");
-  }
+     if (!link) {
+       alert("Meeting link not available.");
+       return;
+     }    window.open(link, "_blank");
+   }
 }

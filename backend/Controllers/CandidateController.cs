@@ -92,16 +92,4 @@ public class CandidateController : ControllerBase
         });
     }
 
-    [HttpGet("assignment/{candidateId}/schedule")]
-    public async Task<IActionResult> GetCandidateSchedule(int candidateId)
-    {
-        var result = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
-
-        if (result == null || !result.Any())
-            return NotFound(new { Message = "No interview scheduled." });
-
-        return Ok(result);
-    }
-
-
 }

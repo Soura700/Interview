@@ -1,25 +1,25 @@
-<div class="candidate-wrapper">
+<div class="schedule-wrapper">
 
   <h2 class="page-title">📅 Your Interview Schedule</h2>
 
   <div *ngIf="loading()" class="loading">Loading...</div>
 
   <div *ngIf="noData()" class="empty-box">
-    No upcoming interviews.
+    No interview scheduled yet.
   </div>
 
   <div class="cards">
-    <div class="card" *ngFor="let i of upcoming()">
+    <div class="card" *ngFor="let s of schedule()">
 
-      <h3>{{ i.interviewType }} Interview</h3>
+      <h3>Interviewer: {{ s.interviewer?.fullName }}</h3>
 
-      <p><strong>Interviewer:</strong> {{ i.interviewer?.fullName }}</p>
-      <p><strong>Email:</strong> {{ i.interviewer?.email }}</p>
-      <p><strong>Date:</strong> {{ i.scheduledDate | date:'medium' }}</p>
+      <p><strong>Email:</strong> {{ s.interviewer?.email }}</p>
 
-      <p><strong>Status:</strong> {{ i.status }}</p>
+      <p><strong>Scheduled Date:</strong> {{ s.scheduledDate | date:'medium' }}</p>
 
-      <button class="meeting-btn" (click)="openMeeting(i.meetingLink)">
+      <p><strong>Interview Type:</strong> {{ s.interviewType }}</p>
+
+      <button class="meeting-btn" (click)="openMeeting(s.meetingLink)">
         Join Meeting
       </button>
 
