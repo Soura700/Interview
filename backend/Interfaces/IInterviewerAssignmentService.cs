@@ -24,6 +24,7 @@ namespace backend.Interfaces
 
         //Task<List<InterviewAssignment>> GetAssignmentsByCandidateAsync(int candidateId);
 
+        Task<string> UpdateOfferStatusAsync(int candidateId, int offerStatus);
 
 
     }

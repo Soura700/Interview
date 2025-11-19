@@ -243,5 +243,31 @@ namespace backend.Controllers
             return Ok(assignments);
         }
 
+        //accept offer letter by candidate
+        [HttpPut("assignment/offer")]
+        public async Task<IActionResult> UpdateOfferStatus([FromQuery] int offerStatus)
+        {
+            // 1️⃣ Ensure user authenticated
+            if (!User.Identity.IsAuthenticated)
+                return Unauthorized("Candidate not authenticated");
+
+            // 2️⃣ Read candidateId from JWT
+            var idClaim = User.FindFirst("id")?.Value;
+            if (idClaim == null)
+                return Unauthorized("Candidate ID missing in token");
+
+            int candidateId = int.Parse(idClaim);
+
+            // 3️⃣ Fetch the candidate’s assignment
+            var assignments = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
+
+            // Find ONLY hired assignment
+            var message = await _assignmentService.UpdateOfferStatusAsync(candidateId, offerStatus);
+
+            return Ok(new { Message = message });
+        }
+
+
+
     }
 }

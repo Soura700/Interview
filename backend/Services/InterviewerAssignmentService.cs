@@ -45,6 +45,13 @@ namespace backend.Services
                 var interviewer = await _context.Interviewers.FindAsync(assignment.InterviewerId);
                 if (interviewer != null)
                     interviewer.IsAvailable = false;
+
+                // 🔥 NEW — Update candidate interview status
+                var candidate = await _context.Candidates.FindAsync(assignment.CandidateId);
+                if (candidate != null)
+                {
+                    candidate.InterviewStatus = "Booked";
+                }
             }
 
             // If rejected — mark interviewer available again
@@ -166,6 +173,23 @@ namespace backend.Services
                 .ToListAsync();
         }
 
+        // public async Task<string> UpdateInterviewResultAsync(
+        //     int assignmentId,
+        //     string status,
+        //     string? remarks = null)
+        // {
+        //     var assignment = await _context.InterviewAssignments.FindAsync(assignmentId);
+        //     if (assignment == null)
+        //         return "Assignment not found.";
+
+        //     assignment.Status = status;
+        //     assignment.Remarks = remarks;
+
+
+        //     await _context.SaveChangesAsync();
+        //     return "Interview result updated.";
+        // }
+
         public async Task<string> UpdateInterviewResultAsync(
             int assignmentId,
             string status,
@@ -174,12 +198,62 @@ namespace backend.Services
             var assignment = await _context.InterviewAssignments.FindAsync(assignmentId);
             if (assignment == null)
                 return "Assignment not found.";
-
+        
             assignment.Status = status;
             assignment.Remarks = remarks;
 
-
+            // ⭐ NEW → Update candidate interview status
+            var candidates = await _context.Candidates.FindAsync(assignment.CandidateId);
+            if (candidates != null)
+            {
+                candidates.InterviewStatus = "Completed";
+            }
+        
+            // -------- Email Sending Logic Based on Result --------
+            try
+            {
+                var candidate = await _context.Candidates.FindAsync(assignment.CandidateId);
+        
+                if (candidate != null && !string.IsNullOrWhiteSpace(candidate.Email))
+                {
+                    string subject = "";
+                    string body = "";
+        
+                    if (status == "Hired")
+                    {
+                        subject = "🎉 Congratulations! You Are Hired";
+                        body =
+                            $"Hi {candidate.FullName},\n\n" +
+                            $"Great news! You have been Hired based on your interview performance.\n\n" +
+                            $"Remarks: {remarks}\n\n" +
+                            $"Our HR team will reach out to you with onboarding details.\n\n" +
+                            $"Warm congratulations!\n\n" +
+                            $"Regards,\nInterview Management System";
+                    }
+                    else if (status == "Rejected")
+                    {
+                        subject = "Interview Result – Not Selected";
+                        body =
+                            $"Hi {candidate.FullName},\n\n" +
+                            $"Thank you for interviewing with us.\n\n" +
+                            $"Unfortunately, you were not selected this time.\n\n" +
+                            $"Remarks: {remarks}\n\n" +
+                            $"We encourage you to apply again for future opportunities.\n\n" +
+                            $"Regards,\nInterview Management System";
+                    }
+        
+                    if (!string.IsNullOrEmpty(subject))
+                        await _emailService.SendEmailAsync(candidate.Email, subject, body);
+                }
+            }
+            catch
+            {
+                // Silent catch to avoid breaking logic
+            }
+        
+            // ---------------- Save DB ----------------
             await _context.SaveChangesAsync();
+        
             return "Interview result updated.";
         }
 
@@ -238,5 +312,28 @@ namespace backend.Services
             await _context.SaveChangesAsync();
             return "Interview rejected.";
         }
+
+        public async Task<string> UpdateOfferStatusAsync(int candidateId, int offerStatus)
+        {
+            // find assignment for candidate
+            var assignment = await _context.InterviewAssignments
+                .Where(a => a.CandidateId == candidateId 
+                            && a.Status == "Hired")
+                .FirstOrDefaultAsync();
+
+            if (assignment == null)
+                return "No hired candidate assignment found.";
+
+            // Save offer status (1 = accepted, 0 = rejected)
+            assignment.OfferStatus = offerStatus;
+
+            await _context.SaveChangesAsync();
+
+            return offerStatus == 1 
+                ? "Offer accepted successfully."
+                : "Offer rejected successfully.";
+        }
+
+
     }
 }

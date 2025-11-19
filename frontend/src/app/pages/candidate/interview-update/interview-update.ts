@@ -64,4 +64,26 @@ export class InterviewUpdate implements OnInit {
        return;
      }    window.open(link, "_blank");
    }
+
+   /** 🔹 Accept or Reject Offer Letter */
+  updateOfferStatus(assignmentId: number, decision: number) {
+
+    this.http.put(
+      `http://localhost:5147/api/candidate/secure/assignment/offer`,
+      {},
+      {
+        params: {
+          offerStatus: decision,    // 1 = Accept, 0 = Reject
+          //assignmentId: assignmentId
+        },
+        withCredentials: true
+      }
+    ).subscribe({
+      next: () => {
+        alert(decision === 1 ? "Offer Accepted!" : "Offer Rejected.");
+
+
+      }
+    });
+  }
 }
