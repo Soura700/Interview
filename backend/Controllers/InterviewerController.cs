@@ -21,8 +21,15 @@ namespace InterviewManagementSystem.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateInterviewerDto dto)
         {
-            var interviewer = await _service.CreateInterviewerAsync(dto);
-            return Ok(new { Message = "Interviewer created successfully.", interviewer });
+            try
+            {
+                var interviewer = await _service.CreateInterviewerAsync(dto);
+                return Ok(new { message = "Interviewer created successfully.", interviewer });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("login")]
@@ -77,8 +84,8 @@ namespace InterviewManagementSystem.Controllers
             [FromQuery] string? remarks = null)
         {
             var message = await _assignmentService.UpdateInterviewResultAsync(
-                assignmentId, 
-                status, 
+                assignmentId,
+                status,
                 remarks
             );
 

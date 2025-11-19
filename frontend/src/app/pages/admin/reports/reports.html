@@ -8,18 +8,41 @@
     <input type="text" [(ngModel)]="skill" placeholder="Skill (Optional)" />
 
     <button (click)="loadRejected()">Rejected Candidates</button>
+    <button (click)="loadSuccessByMonth()">Success (Per Month)</button>
     <button (click)="loadProposalRejected()">Proposal Rejected</button>
     <button (click)="loadSuccessBySkill()">Success by Skill</button>
   </div>
 
-  <!-- Loading + Error -->
+  <!-- Loading + System Error -->
   <div *ngIf="loading" class="loading">Loading...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- User Input Error -->
+  <div *ngIf="inputError" class="input-error-box">
+    ⚠️ {{ inputError }}
+  </div>
+
+  <!-- No Data Found -->
+  <div *ngIf="!loading && noData" class="no-data-box">
+    📭 No data found for selected filters.
+  </div>
 
   <!-- Rejected Candidates -->
   <div class="report-block" *ngIf="!loading && rejected.length > 0">
     <h3>❌ Rejected Candidates</h3>
     <div class="card" *ngFor="let c of rejected">
+      <p><strong>{{ c.fullName }}</strong></p>
+      <p>Email: {{ c.email }}</p>
+      <p>Skill: {{ c.skillSet }}</p>
+      <p>Status: {{ c.status }}</p>
+      <p>Month: {{ c.month }}</p>
+    </div>
+  </div>
+
+  <!-- Success by Month -->
+  <div class="report-block" *ngIf="!loading && successByMonth.length > 0">
+    <h3>✅ Successful Candidates (Per Month)</h3>
+    <div class="card" *ngFor="let c of successByMonth">
       <p><strong>{{ c.fullName }}</strong></p>
       <p>Email: {{ c.email }}</p>
       <p>Skill: {{ c.skillSet }}</p>
@@ -40,9 +63,9 @@
     </div>
   </div>
 
-  <!--- Success by Skill -->
+  <!-- Success by Skill -->
   <div class="report-block" *ngIf="!loading && successBySkill.length > 0">
-    <h3>Successful Candidates ({{ skill }})</h3>
+    <h3>🎯 Successful Candidates (Skill: {{ skill }})</h3>
     <div class="card" *ngFor="let c of successBySkill">
       <p><strong>{{ c.fullName }}</strong></p>
       <p>Email: {{ c.email }}</p>
@@ -51,4 +74,11 @@
       <p>Month: {{ c.month }}</p>
     </div>
   </div>
+
+  <!-- Statistics (Animated Chart.js) -->
+  <div class="stats-container" *ngIf="!loading && (rejected.length || successByMonth.length)">
+    <h2>📈 Monthly Statistics</h2>
+    <canvas id="statsChart"></canvas>
+  </div>
+
 </div>

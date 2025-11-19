@@ -47,9 +47,11 @@ namespace backend.Models
         public string MeetingId { get; set; } = string.Empty;    // GUID
         public string MeetingLink { get; set; } = string.Empty;  // frontend link
 
-
-
-
+        // Offer Letter Acceptance Status
+        // null = no response / offer not given
+        // 1 = accepted
+        // 0 = rejected
+        public int? OfferStatus { get; set; } = null;
 
     }
 }

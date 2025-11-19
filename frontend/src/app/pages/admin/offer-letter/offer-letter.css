@@ -1,0 +1,118 @@
+.offer-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #43a047;
+}
+
+.error-box {
+  margin-top: 10px;
+  background: #ffe6e6;
+  color: #d9534f;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loading {
+  margin-top: 10px;
+  color: #0057ff;
+  font-weight: bold;
+}
+
+
+.offer-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  background: #0078ff;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005fcc;
+}
+
+.send-btn {
+  background: #28a745;
+}
+
+.send-btn:hover {
+  background: #218838;
+}
+
+.loading {
+  margin-top: 10px;
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.error-box {
+  margin-top: 10px;
+  padding: 10px;
+  background: #ffcccc;
+  color: #b30000;
+  border-radius: 6px;
+}
+
+.success-box {
+  margin-top: 10px;
+  padding: 10px;
+  background: #d4edda;
+  color: #155724;
+  border-radius: 6px;
+}

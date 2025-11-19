@@ -308,6 +308,8 @@ builder.Services.AddScoped<IVideoMeetingService, VideoMeetingService>();
 builder.Services.AddScoped<IAdminAuthService, AdminAuthService>();
 builder.Services.AddScoped<ICandidateAuthService, CandidateAuthService>();
 builder.Services.AddScoped<IInterviewerAuthService, InterviewerAuthService>();
+builder.Services.AddScoped<PdfService>();
+
 
 
 // ===========================

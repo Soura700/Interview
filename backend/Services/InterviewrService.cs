@@ -20,6 +20,13 @@ public class InterviewerService : IInterviewerService
 
     public async Task<Interviewer> CreateInterviewerAsync(CreateInterviewerDto dto)
     {
+
+        var existing = await _context.Interviewers
+    .FirstOrDefaultAsync(i => i.Email == dto.Email);
+
+        if (existing != null)
+            throw new Exception("Email already exists");
+
         var firstName = dto.FullName.Split(' ')[0];
         string defaultPassword = $"Welcome@{firstName}";
         string hashedPassword = PasswordHasher.Hash(defaultPassword);
@@ -30,8 +37,8 @@ public class InterviewerService : IInterviewerService
             Email = dto.Email,
             SkillSet = dto.SkillSet,
             InterviewLevel = dto.InterviewLevel,
-            ExperienceYears = dto.ExperienceYears, 
-            IsAvailable = dto.IsAvailable,         
+            ExperienceYears = dto.ExperienceYears,
+            IsAvailable = dto.IsAvailable,
             PasswordHash = hashedPassword,
             FirstLogin = true
         };
@@ -53,6 +60,13 @@ public class InterviewerService : IInterviewerService
         Console.WriteLine($"Generated password for {dto.FullName}: {defaultPassword}");
         return interviewer;
     }
+
+    public async Task<Interviewer?> GetInterviewerByEmailAsync(string email)
+    {
+        return await _context.Interviewers
+            .FirstOrDefaultAsync(x => x.Email == email);
+    }
+
 
     public async Task<(string message, bool firstLogin)> LoginAsync(LoginDto dto)
     {
