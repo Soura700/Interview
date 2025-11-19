@@ -27,6 +27,8 @@ import { AssignInterview } from './pages/admin/assign-interview/assign-interview
 import { ViewAssignments } from './pages/admin/view-assignments/view-assignments';
 import { MeetingComponent } from './pages/meeting/meeting';
 import { ReportsComponent } from './pages/admin/reports/reports';
+import { OfferLetterComponent } from './pages/admin/offer-letter/offer-letter';
+
 import { Hello } from './hello/hello';
 
 import { authGuard } from './guards/auth-guard';
@@ -47,6 +49,7 @@ import { UpcomingInterviews } from './pages/interviewer/upcoming-interviews/upco
 import { AssignedInterviews } from './pages/interviewer/assigned-interviews/assigned-interviews';
 import { CompletedInterviews } from './pages/interviewer/completed-interviews/completed-interviews';
 import { LandingComponent } from './pages/landing/landing';
+
 
 
 
@@ -74,6 +77,7 @@ export const routes: Routes = [
             { path: 'assign-interview', component: AssignInterview },
             { path: 'view-assignments', component: ViewAssignments },
             { path: 'view-reports', component: ReportsComponent },
+            { path: 'offer-letter', component: OfferLetterComponent},
             { path: '', redirectTo: 'create-interviewer', pathMatch: 'full' } // default page
         ]
     },

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-reports',
@@ -19,79 +20,177 @@ export class ReportsComponent implements OnInit {
   rejected: any[] = [];
   proposalRejected: any[] = [];
   successBySkill: any[] = [];
+  successByMonth: any[] = [];
 
   loading = false;
   error = "";
+  inputError = "";
+  noData = false;
 
-  constructor(private http: HttpClient) { }
+  statsChart: any;
 
-  ngOnInit() { }
+  constructor(
+    private http: HttpClient,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  // 🔥 FIXED: Added withCredentials for JWT Admin cookie
+  ngOnInit() {}
+
+  // Helper to clear all state
+  clearAll() {
+    this.rejected = [];
+    this.proposalRejected = [];
+    this.successBySkill = [];
+    this.successByMonth = [];
+
+    this.error = "";
+    this.inputError = "";
+    this.noData = false;
+  }
+
+  // ------------------- REJECTED -------------------
   loadRejected() {
+    this.clearAll();
     this.loading = true;
+
     this.http.get(
       `http://localhost:5147/api/reports/rejected?year=${this.year}&month=${this.month}`,
       { withCredentials: true }
-    )
-      .subscribe({
-        next: (res: any) => {
-          console.log("Rejected raw:", res);
-          console.log("Keys:", Object.keys(res[0]));
+    ).subscribe({
+      next: (res: any) => {
+        this.rejected = res;
+        this.loading = false;
 
-          console.log("Rejected candidates:");
-          console.log(res);
-          this.rejected = res;
-          this.loading = false;
-        },
-        error: () => {
-          this.error = "Failed to load rejected list";
-          this.loading = false;
-        }
-      });
+        if (res.length === 0) this.noData = true;
+
+        this.cd.detectChanges();
+        this.renderStatisticsChart();
+      },
+      error: () => {
+        this.error = "Failed to load rejected candidates";
+        this.loading = false;
+        this.cd.detectChanges();
+      }
+    });
   }
 
-  loadProposalRejected() {
+  // ------------------- SUCCESS BY MONTH -------------------
+  loadSuccessByMonth() {
+    this.clearAll();
     this.loading = true;
+
+    this.http.get(
+      `http://localhost:5147/api/reports/success?year=${this.year}&month=${this.month}`,
+      { withCredentials: true }
+    ).subscribe({
+      next: (res: any) => {
+        this.successByMonth = res;
+        this.loading = false;
+
+        if (res.length === 0) this.noData = true;
+
+        this.cd.detectChanges();
+        this.renderStatisticsChart();
+      },
+      error: () => {
+        this.error = "Failed to load successful candidates";
+        this.loading = false;
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  // ------------------- PROPOSAL REJECTED -------------------
+  loadProposalRejected() {
+    this.clearAll();
+    this.loading = true;
+
     this.http.get(
       `http://localhost:5147/api/reports/proposal-rejected?year=${this.year}&month=${this.month}`,
       { withCredentials: true }
-    )
-      .subscribe({
-        next: (res: any) => {
-          this.proposalRejected = res;
-          this.loading = false;
-        },
-        error: () => {
-          this.error = "Failed to load proposal rejected list";
-          this.loading = false;
-        }
-      });
+    ).subscribe({
+      next: (res: any) => {
+        this.proposalRejected = res;
+        this.loading = false;
+
+        if (res.length === 0) this.noData = true;
+
+        this.cd.detectChanges();
+        this.renderStatisticsChart();
+      },
+      error: () => {
+        this.error = "Failed to load proposal rejected candidates";
+        this.loading = false;
+        this.cd.detectChanges();
+      }
+    });
   }
 
-  // 🔥 FIXED: Correct query parameter → skill=
-  // 🔥 FIXED: Added withCredentials
+  // ------------------- SUCCESS BY SKILL -------------------
   loadSuccessBySkill() {
+    this.clearAll();
+
     if (!this.skill.trim()) {
-      alert("Enter a skill!");
+      this.inputError = "Please enter a skill before searching!";
       return;
     }
 
     this.loading = true;
+
     this.http.get(
       `http://localhost:5147/api/reports/success-by-skill?year=${this.year}&month=${this.month}&skill=${this.skill}`,
       { withCredentials: true }
-    )
-      .subscribe({
-        next: (res: any) => {
-          this.successBySkill = res;
-          this.loading = false;
-        },
-        error: () => {
-          this.error = "Failed to load successful candidates";
-          this.loading = false;
-        }
-      });
+    ).subscribe({
+      next: (res: any) => {
+        this.successBySkill = res;
+        this.loading = false;
+
+        if (res.length === 0) this.noData = true;
+
+        this.cd.detectChanges();
+        this.renderStatisticsChart();
+      },
+      error: () => {
+        this.error = "Failed to load success-by-skill candidates";
+        this.loading = false;
+        this.cd.detectChanges();
+      }
+    });
   }
 
+  // ------------------- CHART RENDERING -------------------
+  renderStatisticsChart() {
+    if (this.statsChart) {
+      this.statsChart.destroy();
+    }
+
+    const rejectedCount = this.rejected.length;
+    const successCount = this.successByMonth.length;
+
+    if (rejectedCount === 0 && successCount === 0) return;
+
+    this.statsChart = new Chart("statsChart", {
+      type: 'bar',
+      data: {
+        labels: ['Rejected', 'Successful'],
+        datasets: [{
+          label: 'Candidate Count',
+          data: [rejectedCount, successCount],
+          backgroundColor: ['#ff4d4d', '#4CAF50'],
+          borderColor: ['#b30000', '#1e7e34'],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 1200,
+          easing: 'easeInOutQuart'
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  }
 }

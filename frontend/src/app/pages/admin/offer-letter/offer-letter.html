@@ -1,0 +1,35 @@
+<div class="offer-container">
+  <h2>📄 Generate & Send Offer Letter</h2>
+
+  <div class="card">
+
+    <!-- Candidate ID Input -->
+    <label>Candidate ID</label>
+    <input type="number" [(ngModel)]="candidateId" placeholder="Enter Candidate ID" />
+
+    <!-- Buttons -->
+    <button [disabled]="loading" (click)="generateOffer()">
+      📥 Download Offer Letter
+    </button>
+
+    <button [disabled]="loading" class="send-btn" (click)="sendOffer()">
+      📩 Send Offer Letter
+    </button>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading">
+      ⏳ Processing...
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-box">
+      ❌ {{ error }}
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="success" class="success-box">
+      ✅ {{ success }}
+    </div>
+
+  </div>
+</div>

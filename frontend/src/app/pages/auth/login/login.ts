@@ -474,13 +474,18 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon'; 
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  
+
   templateUrl: './login.html',
-   imports: [FormsModule, MatIconModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatIconModule
+  ],
   styleUrls: ['./login.css']
 })
 export class LoginComponent implements OnInit {
@@ -498,7 +503,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     const blocked = this.router.url.includes('blocked=true');
@@ -519,7 +524,7 @@ export class LoginComponent implements OnInit {
       withCredentials: true
     }).subscribe({
       next: () => this.router.navigate(['/admin/dashboard']),
-      error: () => {}
+      error: () => { }
     });
 
     // INTERVIEWER
@@ -527,7 +532,7 @@ export class LoginComponent implements OnInit {
       withCredentials: true
     }).subscribe({
       next: () => this.router.navigate(['/interviewer/interviewer-dashboard']),
-      error: () => {}
+      error: () => { }
     });
 
     // CANDIDATE
@@ -546,10 +551,10 @@ export class LoginComponent implements OnInit {
 
             this.router.navigate(['/candidate/candidate-dashboard']);
           },
-          error: () => {}
+          error: () => { }
         });
       },
-      error: () => {}
+      error: () => { }
     });
   }
 
@@ -584,30 +589,34 @@ export class LoginComponent implements OnInit {
       email: this.credentials.email,
       password: this.credentials.password
     }, { withCredentials: true })
-    .pipe(finalize(() => this.loading.set(false)))
-    .subscribe({
-      next: (res: any) => {
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (res: any) => {
 
-        if (this.isFirstLoginFlag(res.firstLogin)) {
-          this.router.navigate(['/changePassword'], {
-            queryParams: { email: this.credentials.email, role: this.credentials.role }
-          });
-          return;
+          if (this.isFirstLoginFlag(res.firstLogin)) {
+            this.router.navigate(['/changePassword'], {
+              queryParams: { email: this.credentials.email, role: this.credentials.role }
+            });
+            return;
+          }
+
+          if (this.credentials.role === 'Admin')
+            this.router.navigate(['/admin/dashboard']);
+
+          if (this.credentials.role === 'Interviewer')
+            this.router.navigate(['/interviewer/interviewer-dashboard']);
+
+          if (this.credentials.role === 'Candidate')
+            this.router.navigate(['/candidate/candidate-dashboard']);
+        },
+        error: (err) => {
+          console.log("FULL ERROR:", err);
+
+          const msg = err?.error?.message || 'Invalid credentials';
+          this.errorMessage.set(msg);   // <-- This will show in your UI div
         }
 
-        if (this.credentials.role === 'Admin')
-          this.router.navigate(['/admin/dashboard']);
-
-        if (this.credentials.role === 'Interviewer')
-          this.router.navigate(['/interviewer/interviewer-dashboard']);
-
-        if (this.credentials.role === 'Candidate')
-          this.router.navigate(['/candidate/candidate-dashboard']);
-      },
-      error: (err) => {
-        this.errorMessage.set(err.error?.message || 'Invalid credentials');
-      }
-    });
+      });
 
   }
 }

@@ -6,7 +6,7 @@
     <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
 
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-      <!-- 📧 Email -->
+      <!-- Email -->
       <div class="input-group">
         <label>Email</label>
         <input
@@ -19,7 +19,7 @@
         />
       </div>
 
-      <!-- 🔒 Password -->
+      <!-- Password -->
       <div class="input-group password-group">
         <label>Password</label>
         <input
@@ -29,26 +29,15 @@
           required
           placeholder="Enter your password"
         />
-
-        <!-- <span class="toggle-eye" (click)="togglePasswordVisibility()">
-          {{ showPassword() ? '🙈' : '👁' }}
-        </span> -->
-            <mat-icon class="toggle-eye" (click)="togglePasswordVisibility()">
-  {{ showPassword() ? 'visibility_off' : 'visibility' }}
-</mat-icon>
-
-
+        <mat-icon class="toggle-eye" (click)="togglePasswordVisibility()">
+          {{ showPassword() ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
       </div>
 
-      <!-- 🧑‍💼 Role Selection -->
+      <!-- Role Selection -->
       <div class="input-group">
         <label>Login As</label>
-        <select
-          name="role"
-          [(ngModel)]="credentials.role"
-          required
-          class="role-select"
-        >
+        <select name="role" [(ngModel)]="credentials.role" required class="role-select">
           <option value="">Select Role</option>
           <option value="Candidate">Candidate</option>
           <option value="Interviewer">Interviewer</option>
@@ -56,14 +45,10 @@
         </select>
       </div>
 
-      <!-- 🚀 Submit -->
+      <!--  Submit -->
       <button type="submit" [disabled]="loading() || loginForm.invalid">
         {{ loading() ? 'Logging in...' : 'Login' }}
       </button>
     </form>
-
-    <p class="switch-link">
-      Don’t have an account? <a routerLink="/register">Register</a>
-    </p>
   </div>
 </div>

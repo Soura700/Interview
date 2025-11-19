@@ -52,12 +52,32 @@ namespace backend.Services
                 .ToListAsync();
         }
 
+        public async Task<List<CandidateReportDto>> GetSuccessfulCandidatesByMonth(int year, int month)
+        {
+            return await _context.InterviewAssignments
+                .Where(a => a.Status == "Hired" &&
+                            a.ScheduledDate.Year == year &&
+                            a.ScheduledDate.Month == month)
+                .Include(a => a.Candidate)
+                .Select(a => new CandidateReportDto
+                {
+                    CandidateId = a.CandidateId,
+                    FullName = a.Candidate.FullName,
+                    Email = a.Candidate.Email,
+                    SkillSet = a.Candidate.SkillSet,
+                    Status = a.Status,
+                    Month = a.ScheduledDate.ToString("MMMM")
+                })
+                .ToListAsync();
+        }
+
+
         public async Task<List<CandidateReportDto>> GetSuccessfulCandidatesBySkillAndMonth(string skill, int year, int month)
         {
             skill = skill.ToLower().Trim();
 
             return await _context.InterviewAssignments
-                .Where(a => a.Status == "Selected" &&
+                .Where(a => a.Status == "Hired" &&
                             a.ScheduledDate.Year == year &&
                             a.ScheduledDate.Month == month &&
                             a.Candidate.SkillSet.ToLower().Contains(skill))

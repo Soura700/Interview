@@ -13,6 +13,5 @@ public class Candidate
     public string Role { get; set; } = "Candidate";
     public bool FirstLogin { get; set; } = true;
     public string Status { get; set; } = "Active";
-
     public string InterviewStatus { get; set; } = "None";  // None / Pending / Booked / Completed
 }
