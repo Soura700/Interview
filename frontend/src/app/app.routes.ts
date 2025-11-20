@@ -61,6 +61,8 @@ export const routes: Routes = [
     { path: 'changePassword', component: ChangePasswordComponent },
     { path: 'meeting/:meetingId', component: MeetingComponent },
     { path: 'landing', component: LandingComponent },
+
+    // { path: 'landing', component: LandingComponent },
     {
         path: 'hello',
         component: Hello,
@@ -78,8 +80,8 @@ export const routes: Routes = [
             { path: 'assign-interview', component: AssignInterview },
             { path: 'view-assignments', component: ViewAssignments },
             { path: 'view-reports', component: ReportsComponent },
-            { path: 'offer-letter', component: OfferLetterComponent},
-            {path: 'admin-candidates', component: AdminCandidatesComponent},
+            { path: 'offer-letter', component: OfferLetterComponent },
+            { path: 'admin-candidates', component: AdminCandidatesComponent },
             { path: '', redirectTo: 'create-interviewer', pathMatch: 'full' } // default page
         ]
     },
@@ -108,12 +110,13 @@ export const routes: Routes = [
             { path: 'interviewer-home', component: InterviewerHome },
             { path: 'upcoming-interviews', component: UpcomingInterviews },
             { path: 'assigned-interviews', component: AssignedInterviews },
-            { path: 'completed-interviews', component: CompletedInterviews},
+            { path: 'completed-interviews', component: CompletedInterviews },
             { path: '', redirectTo: 'interviewer-home', pathMatch: 'full' } // default page
         ]
     },
     //Default redirect (root)
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '', redirectTo: '/landing', pathMatch: 'full' },
+    // { path: '', redirectTo: '/login', pathMatch: 'full' },
 
     // Catch-all route for 404s
     { path: '**', redirectTo: '/login' }

@@ -42,11 +42,11 @@ public class CandidateController : ControllerBase
     {
         var totalCandidates = await _candidateService.GetCandidateCountAsync();
 
-        // 🔥 Auto-adjust page size if data is less than default
+        // Auto-adjust page size if data is less than default
         if (totalCandidates < pageSize)
             pageSize = totalCandidates;
 
-        // 🔥 Ensure page is valid
+        // Ensure page is valid
         if (pageSize == 0)
             pageSize = 1;
 
