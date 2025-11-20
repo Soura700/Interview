@@ -28,6 +28,7 @@ import { ViewAssignments } from './pages/admin/view-assignments/view-assignments
 import { MeetingComponent } from './pages/meeting/meeting';
 import { ReportsComponent } from './pages/admin/reports/reports';
 import { OfferLetterComponent } from './pages/admin/offer-letter/offer-letter';
+import { AdminCandidatesComponent } from './pages/admin/admin-candidates/admin-candidates';
 
 import { Hello } from './hello/hello';
 
@@ -78,6 +79,7 @@ export const routes: Routes = [
             { path: 'view-assignments', component: ViewAssignments },
             { path: 'view-reports', component: ReportsComponent },
             { path: 'offer-letter', component: OfferLetterComponent},
+            {path: 'admin-candidates', component: AdminCandidatesComponent},
             { path: '', redirectTo: 'create-interviewer', pathMatch: 'full' } // default page
         ]
     },

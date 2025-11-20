@@ -37,6 +37,34 @@ public class CandidateController : ControllerBase
     }
 
 
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10)
+    {
+        var totalCandidates = await _candidateService.GetCandidateCountAsync();
+
+        // 🔥 Auto-adjust page size if data is less than default
+        if (totalCandidates < pageSize)
+            pageSize = totalCandidates;
+
+        // 🔥 Ensure page is valid
+        if (pageSize == 0)
+            pageSize = 1;
+
+        var candidates = await _candidateService.GetAllCandidatesAsync(page, pageSize);
+
+        return Ok(new
+        {
+            total = totalCandidates,
+            page,
+            pageSize,
+            candidates
+        });
+    }
+
+
+
+
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
@@ -44,12 +72,20 @@ public class CandidateController : ControllerBase
         return Ok(new { message, firstLogin });
     }
 
+
+
     [HttpPost("changepassword")]
     public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
     {
         var message = await _candidateService.ChangePasswordAsync(dto);
         return Ok(new { message });
     }
+
+
+
+
+
+
 
     [HttpPost("upload-resume")]
     [Consumes("multipart/form-data")]
@@ -91,5 +127,8 @@ public class CandidateController : ControllerBase
             resumePath = candidate.ResumePath
         });
     }
+
+
+
 
 }
