@@ -14,14 +14,54 @@
       <h3>Interviewer: {{ s.interviewer?.fullName }}</h3>
 
       <p><strong>Email:</strong> {{ s.interviewer?.email }}</p>
-
       <p><strong>Scheduled Date:</strong> {{ s.scheduledDate | date:'medium' }}</p>
-
       <p><strong>Interview Type:</strong> {{ s.interviewType }}</p>
 
       <button class="meeting-btn" (click)="openMeeting(s.meetingLink)">
         Join Meeting
       </button>
+
+      <!-- 🔹 INTERVIEW RESULT SECTION -->
+      <div class="result-box" *ngIf="s.status !== 'Pending'">
+
+        <div *ngIf="s.status === 'Failed'" class="failed-text">
+          ❌ Result: Failed. Please try again.
+        </div>
+
+        <div *ngIf="s.status === 'Rejected'" class="failed-text">
+          ❌ You were rejected by interviewer.
+        </div>
+
+        <!-- 🔹 HIRED CASE -->
+        <div *ngIf="s.status === 'Hired'">
+
+          <!-- If offerStatus is NULL → show Accept / Reject options -->
+          <div *ngIf="s.offerStatus == null">
+            <p class="offer-label"><strong>🎉 You are Hired!</strong> Please choose:</p>
+
+            <button class="offer-accept" 
+                    (click)="updateOfferStatus(s.id, 1)">
+              Accept Offer Letter
+            </button>
+
+            <button class="offer-reject" 
+                    (click)="updateOfferStatus(s.id, 0)">
+              Reject Offer
+            </button>
+          </div>
+
+          <!-- OFFER ACCEPTED -->
+          <div *ngIf="s.offerStatus === 1" class="success-text">
+            ✅ Offer Letter Accepted! 🎉
+          </div>
+
+          <!-- OFFER REJECTED -->
+          <div *ngIf="s.offerStatus === 0" class="failed-text">
+            ❌ Offer Letter Rejected.
+          </div>
+
+        </div>
+      </div>
 
     </div>
   </div>

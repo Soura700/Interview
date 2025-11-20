@@ -1,40 +1,65 @@
-<div class="home-wrapper">
+<div class="profile-container">
 
-  <h2 class="page-title">🧑‍💼 Candidate Profile</h2>
+  <div class="profile-card">
 
-  <div *ngIf="loading()" class="loading">⏳ Loading...</div>
-  <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+    <!-- Header -->
+    <div class="profile-header">
+      <div class="avatar-circle">{{ fullName().charAt(0) }}</div>
 
-  <div class="profile-box">
-    <div class="field">
-      <label>Full Name</label>
-      <input disabled [value]="fullName()" />
+      <div class="header-info">
+        <div class="name">{{ fullName() }}</div>
+        <div class="designation">
+          Candidate • {{ skillSet() }}
+        </div>
+      </div>
     </div>
 
-    <div class="field">
-      <label>Email</label>
-      <input disabled [value]="email()" />
+    <hr class="divider" />
+
+    <!-- Candidate Details Grid -->
+    <div class="details-grid">
+
+      <div class="item">
+        <div class="label"><i class="icon">👤</i> Full Name</div>
+        <div class="value">{{ fullName() }}</div>
+      </div>
+
+      <div class="item">
+        <div class="label"><i class="icon">📧</i> Email</div>
+        <div class="value">{{ email() }}</div>
+      </div>
+
+      <div class="item">
+        <div class="label"><i class="icon">🎯</i> Experience</div>
+        <div class="value">{{ experienceYears() }} years</div>
+      </div>
+
+      <div class="item">
+        <div class="label"><i class="icon">⚡</i> Skill Set</div>
+        <div class="value">{{ skillSet() }}</div>
+      </div>
+
+      <!-- Resume Section -->
+      <div class="item">
+        <div class="label"><i class="icon">📄</i> Resume</div>
+
+        <div class="value" *ngIf="resumeUrl()">
+          <a 
+            [href]="resumeUrl()" 
+            target="_blank" 
+            class="resume-btn"
+          >
+            👁 View Resume
+          </a>
+        </div>
+
+        <div class="value" *ngIf="!resumeUrl()">
+          <span class="no-resume">No resume uploaded.</span>
+        </div>
+      </div>
+
     </div>
 
-    <div class="field">
-      <label>Experience (years)</label>
-      <input disabled [value]="experienceYears()" />
-    </div>
-
-    <div class="field">
-      <label>Skill Set</label>
-      <input disabled [value]="skillSet()" />
-    </div>
-
-    <div class="field" *ngIf="resumeUrl()">
-      <label>Resume</label>
-      <a [href]="resumeUrl()" target="_blank" class="view-btn">👁️ View Resume</a>
-    </div>
-
-    <div class="field" *ngIf="!resumeUrl()">
-      <label>Resume</label>
-      <div class="no-resume">No resume uploaded.</div>
-    </div>
   </div>
 
 </div>
