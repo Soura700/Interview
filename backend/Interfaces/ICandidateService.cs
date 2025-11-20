@@ -6,6 +6,14 @@ namespace backend.Interfaces;
 public interface ICandidateService
 {
     Task<Candidate> CreateCandidateAsync(CreateCandidateDto dto);
+
+    
+    // Get paginated candidates
+    Task<List<Candidate>> GetAllCandidatesAsync(int page, int pageSize);
+
+    // Get total count (REQUIRED FOR PAGINATION)
+    Task<int> GetCandidateCountAsync();
+
     Task<(string message, bool firstLogin)> LoginAsync(LoginDto dto);
     Task<string> ChangePasswordAsync(ChangePasswordDto dto);
 

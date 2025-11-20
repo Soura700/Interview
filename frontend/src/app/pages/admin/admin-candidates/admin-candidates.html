@@ -1,0 +1,50 @@
+<div class="candidates-container">
+
+  <h2 class="title">👥 All Candidates</h2>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">⏳ Loading candidates.jkvj..</div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error-box">{{ error }}</div>
+
+  <!-- Candidate List -->
+  <div class="cards-wrapper" *ngIf="!loading && candidates.length > 0">
+
+    <div class="candidate-card" *ngFor="let c of candidates">
+      <div class="card-header">
+        <h3>{{ c.fullName }}</h3>
+        <span class="status" [class.active]="c.status === 'Active'" 
+                           [class.inactive]="c.status !== 'Active'">
+          {{ c.status }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <p><strong>Email:</strong> {{ c.email }}</p>
+        <p><strong>Skill:</strong> {{ c.skillSet }}</p>
+        <p><strong>Experience:</strong> {{ c.experienceYears }} years</p>
+        <p><strong>Interview Status:</strong> {{ c.interviewStatus }}</p>
+
+        <p *ngIf="c.resumePath">
+          <strong>Resume:</strong>
+          <a [href]="'http://localhost:5147' + c.resumePath" target="_blank">📄 View</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- No Data -->
+  <div *ngIf="!loading && candidates.length === 0" class="no-data">
+    ❌ No candidates found.
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 1">⬅ Previous</button>
+    <span>Page {{ page }}</span>
+    <button (click)="nextPage()" [disabled]="page * pageSize >= total">Next ➡</button>
+  </div>
+
+</div>
