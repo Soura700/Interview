@@ -13,4 +13,9 @@ public interface IInterviewerService
 
     Task<string> ChangePasswordAsync(ChangePasswordDto dto);
     Task<List<Interviewer>> GetAllInterviewersAsync();
+
+    
+    Task<List<Interviewer>> GetAllInterviewersAsync(int page, int pageSize);
+    Task<int> GetInterviewerCountAsync();
+
 }

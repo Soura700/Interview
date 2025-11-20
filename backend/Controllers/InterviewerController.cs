@@ -103,6 +103,26 @@ namespace InterviewManagementSystem.Controllers
             return Ok(result);
         }
 
+         [HttpGet("all-paged")]
+         public async Task<IActionResult> GetAllInterviewers(int page = 1, int pageSize = 10)
+         {
+             var totalInterviewers = await _service.GetInterviewerCountAsync();
+            // Auto-adjust page size
+             if (totalInterviewers < pageSize)
+                 pageSize = totalInterviewers;
+            if (pageSize == 0)
+                 pageSize = 1;
+            var interviewers = await _service.GetAllInterviewersAsync(page, pageSize);
+            return Ok(new
+             {
+                 total = totalInterviewers,
+                 page,
+                 pageSize,
+                 interviewers
+             });
+         }
+
+
 
     }
 }

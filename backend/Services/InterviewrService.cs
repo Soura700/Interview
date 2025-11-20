@@ -105,4 +105,18 @@ public class InterviewerService : IInterviewerService
     {
         return await _context.Interviewers.ToListAsync();
     }
+
+    public async Task<int> GetInterviewerCountAsync()
+    {
+        return await _context.Interviewers.CountAsync();
+    }
+    public async Task<List<Interviewer>> GetAllInterviewersAsync(int page, int pageSize)
+     {
+         return await _context.Interviewers
+             .OrderBy(i => i.Id)
+             .Skip((page - 1) * pageSize)
+             .Take(pageSize)
+             .ToListAsync();
+     }
+
 }
