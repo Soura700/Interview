@@ -1,18 +1,6 @@
-// import { Routes } from '@angular/router';
-// import { LoginComponent } from './pages/auth/login/login';
-// import { RegisterComponent } from './pages/auth/register/register';
-// import { ChangePasswordComponent } from './pages/auth/change-password/change-password';
-
-// export const routes: Routes = [
-//     {path : 'login' , component : LoginComponent},
-//     {path : 'register' , component : RegisterComponent},
-//     {path : 'changePassword' , component : ChangePasswordComponent}
-// ];
-
-
 import { Routes } from '@angular/router';
 
-// 🧾 Auth Components
+// Auth Components
 import { LoginComponent } from './pages/auth/login/login';
 import { RegisterComponent } from './pages/auth/register/register';
 import { ChangePasswordComponent } from './pages/auth/change-password/change-password';
@@ -51,6 +39,13 @@ import { AssignedInterviews } from './pages/interviewer/assigned-interviews/assi
 import { CompletedInterviews } from './pages/interviewer/completed-interviews/completed-interviews';
 import { LandingComponent } from './pages/landing/landing';
 
+// Error Pages
+
+
+import { Unauthorized401 } from './pages/error/unauthorized-401/unauthorized-401';
+import { NotFound404Component } from './pages/error/not-found-404/not-found-404';
+
+
 
 
 
@@ -61,6 +56,9 @@ export const routes: Routes = [
     { path: 'changePassword', component: ChangePasswordComponent },
     { path: 'meeting/:meetingId', component: MeetingComponent },
     { path: 'landing', component: LandingComponent },
+    // Error Pages
+    { path: '401', component: Unauthorized401 },
+    { path: '404', component: NotFound404Component },
 
     // { path: 'landing', component: LandingComponent },
     {
