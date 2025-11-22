@@ -36,9 +36,11 @@ namespace backend.Services
         public async Task<List<CandidateReportDto>> GetProposalRejectedCandidatesByMonth(int year, int month)
         {
             return await _context.InterviewAssignments
-                .Where(a => a.Status == "ProposalRejected" &&
-                            a.ScheduledDate.Year == year &&
-                            a.ScheduledDate.Month == month)
+                .Where(a =>
+                    a.OfferLetterSend == 1 &&  // Offer was sent
+                    a.OfferStatus == 0 &&      // Candidate rejected the offer
+                    a.ScheduledDate.Year == year &&
+                    a.ScheduledDate.Month == month)
                 .Include(a => a.Candidate)
                 .Select(a => new CandidateReportDto
                 {
@@ -46,11 +48,11 @@ namespace backend.Services
                     FullName = a.Candidate.FullName,
                     Email = a.Candidate.Email,
                     SkillSet = a.Candidate.SkillSet,
-                    Status = a.Status,
                     Month = a.ScheduledDate.ToString("MMMM")
                 })
                 .ToListAsync();
         }
+
 
         public async Task<List<CandidateReportDto>> GetSuccessfulCandidatesByMonth(int year, int month)
         {

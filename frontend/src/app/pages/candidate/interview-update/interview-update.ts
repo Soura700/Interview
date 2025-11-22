@@ -92,7 +92,7 @@
 //           }
 //           return item;
 //         });
-      
+
 //         this.schedule.set(updated);  // <-- Trigger UI update
 //       }
 //     });
@@ -118,7 +118,7 @@ export class InterviewUpdate implements OnInit {
   noData = signal(false);
   assigned = signal<any[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.fetchAssigned();
@@ -151,8 +151,15 @@ export class InterviewUpdate implements OnInit {
       { withCredentials: true }
     ).subscribe({
       next: (res) => {
-        this.schedule.set(res);
-        this.noData.set(res.length === 0);
+
+        // 🔥 Filter: Keep only non-pending interviewerStatus
+        const filtered = res.filter(item => item.interviewerStatus !== 'Pending');
+
+        this.schedule.set(filtered);
+
+        // 🔥 If filtered list becomes empty -> show "no interviews"
+        this.noData.set(filtered.length === 0);
+
         this.loading.set(false);
       },
       error: () => {
@@ -197,3 +204,4 @@ export class InterviewUpdate implements OnInit {
     });
   }
 }
+
