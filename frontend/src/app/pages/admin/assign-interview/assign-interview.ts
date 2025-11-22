@@ -128,9 +128,21 @@ export class AssignInterview {
       .subscribe({
         next: () => {
           this.successMessage.set('✅ Interview assigned successfully!');
+          // --------------------------------
+          // 🔥 RESET FORM AFTER SUCCESS HERE
+          // --------------------------------
+          this.candidateId = null;
+          this.interviewLevel = 'L1';
+          this.candidate = null;
+          this.interviewers = [];
           this.selectedInterviewerId = null;
+          
+          // Clear search fields too
+          this.searchSkill = "";
+          this.searchLevel = "";
+          this.searchedInterviewers = [];
           setTimeout(() => this.successMessage.set(null), 3000);
-        },
+          },
         error: () => this.errorMessage.set('❌ Failed to assign interview.')
       });
   }

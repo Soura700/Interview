@@ -42,9 +42,9 @@
 
 
           <!-- ❌ OFFER LETTER NOT SENT YET -->
-          <div *ngIf="s.offerLetterSend === 0">
-            <p class="failed-text">🎉 Congratulations , You have been selected</p>
-            <p class="failed-text">📭 No offer letter has been sent yet.</p>
+          <div *ngIf="s.offerLetterSend === 0" class="success-text">
+            <p>🎉 Congratulations , You have been selected</p>
+            <p class="failed-text">📭 Offer Letter will be sent to you soon.</p>
           </div>
 
           <!-- <div *ngIf="s.Status === Hired">

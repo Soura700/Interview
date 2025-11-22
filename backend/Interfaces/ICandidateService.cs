@@ -22,4 +22,7 @@ public interface ICandidateService
 
     Task<Candidate?> GetCandidateByIdAsync(int id);
 
+    Task<List<CandidateOfferDto>> GetCandidatesWithOfferStatusAsync();
+
+
 }

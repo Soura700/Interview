@@ -1,55 +1,4 @@
-// import { Component } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { FormsModule } from '@angular/forms';
-// import { CommonModule } from '@angular/common';
-
-// @Component({
-//   selector: 'app-offer-letter',
-//   standalone: true,
-//   imports: [FormsModule, CommonModule],
-//   templateUrl: './offer-letter.html',
-//   styleUrls: ['./offer-letter.css']
-// })
-// export class OfferLetterComponent {
-
-//   candidateId: number | null = null;
-//   error = "";
-//   loading = false;
-
-//   constructor(private http: HttpClient) {}
-
-//   generateOffer() {
-//     this.error = "";
-
-//     if (!this.candidateId) {
-//       this.error = "⚠️ Please enter a valid Candidate ID!";
-//       return;
-//     }
-
-//     this.loading = true;
-
-//     this.http.get(
-//       `http://localhost:5147/api/admin/offer-letter/${this.candidateId}`,
-//       { responseType: 'blob', withCredentials: true }
-//     ).subscribe({
-//       next: (pdf) => {
-//         this.loading = false;
-
-//         const blob = new Blob([pdf], { type: "application/pdf" });
-//         const url = window.URL.createObjectURL(blob);
-//         window.open(url, "_blank");  // opens the PDF in new tab
-//       },
-//       error: (err) => {
-//         this.loading = false;
-//         this.error = err.error?.message || "❌ Failed to generate offer letter.";
-//       }
-//     });
-//   }
-// }
-
-
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -61,18 +10,40 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './offer-letter.html',
   styleUrls: ['./offer-letter.css']
 })
-export class OfferLetterComponent {
+export class OfferLetterComponent implements OnInit {
 
   candidateId: number = 0;
   loading = false;
-  error: string = "";
-  success: string = "";
+  error = "";
+  success = "";
 
-  constructor(private http: HttpClient) { }
+  history: any[] = [];  // <-- Added field
 
-  // ------------------------------
-  // DOWNLOAD OFFER LETTER
-  // ------------------------------
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    console.log("OfferLetterComponent initialized");
+    this.loadHistory();
+  }
+
+  loadHistory() {
+    //console.log("🔄 Fetching offer letter history from API...");
+
+    this.http.get<any[]>("http://localhost:5147/api/admin/offer-letter/candidate-offer", {
+      withCredentials: true
+    }).subscribe({
+      next: (res) => {
+        this.history = res;
+        console.log("✅ Offer letter history loaded:", this.history);
+        setTimeout(() => {}, 0); // Trigger change detection  
+      },
+      error: (err) => {
+        this.history = [];
+        console.log("⚠️ Failed to load offer letter history.",err);
+      }
+    });
+  }
+
   generateOffer() {
     this.resetState();
 
@@ -88,53 +59,56 @@ export class OfferLetterComponent {
     this.http.get(url, { responseType: 'blob', withCredentials: true })
       .subscribe({
         next: (blob) => {
+          this.loading = false;
           const a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
           a.download = `OfferLetter_${this.candidateId}.pdf`;
           a.click();
 
-          this.success = "Offer Letter downloaded successfully!";
-          this.loading = false;
+          alert("Offer Letter downloaded successfully!");
+          window.location.reload();
+          //this.loadHistory();
         },
         error: (err) => {
           this.error = err.error?.message || "Unable to generate Offer Letter";
+          alert(this.error);
           this.loading = false;
         }
       });
   }
 
-  // ------------------------------
-  //  SEND OFFER LETTER BY EMAIL
-  // ------------------------------
   sendOffer() {
-    this.resetState();
+  this.resetState();
 
-    console.log("🔍 sendOffer() fired!");
+  if (!this.candidateId) {
+    this.error = "Please enter a valid Candidate ID";
+    return;
+  }
 
-    if (!this.candidateId) {
-      this.error = "Please enter a valid Candidate ID";
-      return;
-    }
+  this.loading = true;
 
-    this.loading = true;
-    console.log("📨 Sending API request for candidate:", this.candidateId);
+  const url = `http://localhost:5147/api/admin/offer-letter/send/${this.candidateId}`;
 
-    const url = `http://localhost:5147/api/admin/offer-letter/send/${this.candidateId}`;
-    console.log("🌐 API URL:", url);
+  this.http.post(url, {}, { withCredentials: true })
+    .subscribe({
+      next: (res: any) => {
+        console.log("Send Offer Response:", res);
 
-    this.http.post(url, {}, { withCredentials: true })
-      .subscribe({
-        next: (res: any) => {
-          console.log("✅ API Response:", res);
-          this.success = res.message || "Offer Letter Sent!";
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error("❌ API Error:", err);
-          this.error = err.error?.message || "Failed to send offer letter";
-          this.loading = false;
-        }
-      });
+        this.success = res.message;
+        this.loading = false; // 🔥 FIX SPINNER
+
+        alert(res.message || "Offer Letter Sent!");
+
+        setTimeout(() => {
+          window.location.reload(); // 🔥 Delay avoids stuck loading
+        }, 150);
+      },
+      error: (err) => {
+        this.error = err.error?.message || "Failed to send offer letter";
+        alert(this.error);
+        this.loading = false; // 🔥 FIX SPINNER
+      }
+    });
   }
 
 

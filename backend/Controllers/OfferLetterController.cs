@@ -232,5 +232,16 @@ namespace backend.Controllers
             return Ok(new { message = "Offer letter emailed successfully!" });
         }
 
+        [HttpGet("candidate-offer")]
+        public async Task<IActionResult> GetCandidatesForOfferLetter()
+        {
+            var result = await _candidateService.GetCandidatesWithOfferStatusAsync();
+
+            if (result == null || !result.Any())
+                return NotFound(new { message = "No hired candidates found." });
+
+            return Ok(result);
+        }
+
     }
 }

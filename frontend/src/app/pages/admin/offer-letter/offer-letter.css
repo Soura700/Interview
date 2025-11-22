@@ -1,118 +1,189 @@
 .offer-container {
-  max-width: 500px;
-  margin: auto;
+  max-width: 700px;
+  margin: 40px auto;
   padding: 20px;
+  font-family: "Inter", sans-serif;
 }
 
+/* ---- PAGE TITLE ---- */
+h2 {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #0a74ec;
+}
+
+/* ---- MAIN FORM CARD ---- */
 .card {
   background: #ffffff;
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  margin-bottom: 30px;
 }
 
+/* ---- LABEL ---- */
 label {
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 6px;
   display: block;
-}
-
-input {
-  width: 80%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-bottom: 15px;
   font-size: 15px;
 }
 
-button {
-  width: 100%;
+/* ---- INPUT ---- */
+input {
+  width: 40%;
   padding: 12px;
-  background: #4caf50;
-  color: white;
-  border: none;
   border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
+  border: 1px solid #cdd8ff;
+  margin-bottom: 18px;
+  font-size: 15px;
+  transition: 0.25s ease;
 }
 
-button:hover {
-  background: #43a047;
+input:focus {
+  border-color: #0a74ec;
+  box-shadow: 0 0 6px rgba(0,116,236,0.3);
+  outline: none;
+}
+
+/* ---- BUTTON WRAPPER SIDE BY SIDE ---- */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Each button gets equal width */
+.btn-row button {
+  flex: 1;
+}
+
+/* ---- BUTTON STYLES ---- */
+.btn-download {
+  background: #0078ff;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-download:hover {
+  background: #005fcc;
+  transform: translateY(-2px);
+}
+
+.btn-send {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-send:hover {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+/* ---- STATUS BOXES ---- */
+.error-box,
+.success-box {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 15px;
 }
 
 .error-box {
-  margin-top: 10px;
   background: #ffe6e6;
   color: #d9534f;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
 }
 
-.loading {
-  margin-top: 10px;
-  color: #0057ff;
-  font-weight: bold;
+.success-box {
+  background: #d4edda;
+  color: #155724;
 }
 
-
-.offer-container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-}
-
-.card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  background: #0078ff;
-  color: white;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #005fcc;
-}
-
-.send-btn {
-  background: #28a745;
-}
-
-.send-btn:hover {
-  background: #218838;
-}
-
+/* ---- LOADING ---- */
 .loading {
   margin-top: 10px;
   color: #ff9800;
   font-weight: bold;
 }
 
-.error-box {
-  margin-top: 10px;
-  padding: 10px;
-  background: #ffcccc;
-  color: #b30000;
-  border-radius: 6px;
+/* TABLE SECTION */
+.table-card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  margin-top: 30px;
 }
 
-.success-box {
+/* TABLE STYLING */
+.offer-table {
+  width: 100%;
+  border-collapse: seperate;
   margin-top: 10px;
+  font-size: 17px;
+  table-layout: fixed;   /* <-- IMPORTANT for column width control */
+}
+
+.offer-table th {
+  background: #0a74ec;
+  color: white;
   padding: 10px;
-  background: #d4edda;
-  color: #155724;
-  border-radius: 6px;
+  text-align: left;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+/* --- COLUMN WIDTH CONTROL --- */
+.offer-table th:nth-child(1),
+.offer-table td:nth-child(1) {
+  width: 20%;       /* ID small */
+}
+
+.offer-table th:nth-child(2),
+.offer-table td:nth-child(2) {
+  width: 40%;       /* Name largest */
+}
+
+.offer-table th:nth-child(3),
+.offer-table td:nth-child(3) {
+  width: 25%;       /* Status medium */
+}
+
+.offer-table th:nth-child(4),
+.offer-table td:nth-child(4) {
+  width: 25%;       /* Remarks medium */
+}
+
+.offer-table td {
+  padding: 12px;
+  border-bottom: 1px solid #1a52df;
+  overflow-wrap: break-word;
+}
+
+.offer-table tr:hover {
+  background: #f7f9ff;
+}
+
+
+/* ---- NO DATA ---- */
+.no-data {
+  margin-top: 10px;
+  text-align: center;
+  color: #777;
 }
