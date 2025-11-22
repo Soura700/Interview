@@ -82,7 +82,18 @@ export class InterviewUpdate implements OnInit {
       next: () => {
         alert(decision === 1 ? "Offer Accepted!" : "Offer Rejected.");
 
-
+        // 🔥 Update UI instantly — NO RELOAD NEEDED
+        const updated = this.schedule().map(item => {
+          if (item.id === assignmentId) {
+            return {
+              ...item,
+              offerStatus: decision   // <-- Update UI state
+            };
+          }
+          return item;
+        });
+      
+        this.schedule.set(updated);  // <-- Trigger UI update
       }
     });
   }

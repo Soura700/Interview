@@ -1,1 +1,47 @@
-<p>admin-interviewer works!</p>
+<div class="candidates-container">
+
+  <h2 class="title">🧑‍💼 All Interviewers</h2>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">⏳ Loading interviewers...</div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error-box">{{ error }}</div>
+
+  <!-- Interviewer List -->
+  <div class="cards-wrapper" *ngIf="!loading && interviewers.length > 0">
+
+    <div class="candidate-card" *ngFor="let i of interviewers">
+      <div class="card-header">
+        <h3>{{ i.fullName }}</h3>
+
+        <span class="status" 
+              [class.active]="i.isAvailable"
+              [class.inactive]="!i.isAvailable">
+          {{ i.isAvailable ? "Available" : "Busy" }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <p><strong>Email:</strong> {{ i.email }}</p>
+        <p><strong>Stack:</strong> {{ i.skillSet }}</p>
+        <p><strong>Experience: </strong>{{ i.experienceYears }}</p>
+        <p><strong>Level: </strong>{{ i.interviewLevel }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- No Data -->
+  <div *ngIf="!loading && interviewers.length === 0" class="no-data">
+    ❌ No interviewers found.
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 1">⬅ Previous</button>
+    <span>Page {{ page }}</span>
+    <button (click)="nextPage()" [disabled]="page * pageSize >= total">Next ➡</button>
+  </div>
+
+</div>
