@@ -1,3 +1,11 @@
+<!-- Angular Material Loader Overlay -->
+<div class="loading-overlay" *ngIf="loading">
+  <mat-progress-spinner mode="indeterminate" diameter="70" strokeWidth="6" color="primary">
+  </mat-progress-spinner>
+
+  <p class="loading-text">{{ loadingText }}</p>
+</div>
+
 <header class="nav">
   <div class="nav-inner">
     <div class="brand">

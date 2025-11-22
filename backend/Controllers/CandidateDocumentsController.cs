@@ -27,7 +27,6 @@ namespace backend.Controllers
             if (candidate == null)
                 return NotFound("Candidate not found");
 
-            // 🔥 FIX — USING NEW METHOD
             var pdf = _pdfService.GenerateOfferLetter(candidate.FullName, candidate.Email);
 
             return File(pdf, "application/pdf", $"{candidate.FullName}_Shortlisted.pdf");
