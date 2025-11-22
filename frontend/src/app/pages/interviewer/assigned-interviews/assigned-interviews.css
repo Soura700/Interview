@@ -81,6 +81,21 @@
   gap: 12px;
 }
 
+/* Resume button */
+.resume-btn {
+  background: #006ce6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.resume-btn:hover {
+  background: #0052b3;
+}
+
 .accept, .reject {
   padding: 10px 18px;
   border: none;

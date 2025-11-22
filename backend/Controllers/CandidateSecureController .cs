@@ -149,28 +149,57 @@ namespace backend.Controllers
         }
 
         //interview-status update in candidate portal
-        [HttpGet("assignment/schedule")]
-        public async Task<IActionResult> GetCandidateSchedule()
-        {
-            // Ensure user authenticated
-            if (!User.Identity.IsAuthenticated)
-                return Unauthorized("Candidate not authenticated");
+        // [HttpGet("assignment/schedule")]
+        // public async Task<IActionResult> GetCandidateSchedule()
+        // {
+        //     // Ensure user authenticated
+        //     if (!User.Identity.IsAuthenticated)
+        //         return Unauthorized("Candidate not authenticated");
 
-            // Extract candidate ID from JWT
+        //     // Extract candidate ID from JWT
+        //     var idClaim = User.FindFirst("id")?.Value;
+        //     if (idClaim == null)
+        //         return Unauthorized("Candidate ID missing in token");
+
+        //     int candidateId = int.Parse(idClaim);
+
+        //     // Fetch assignments
+        //     var assignments = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
+
+        //     if (assignments == null || !assignments.Any())
+        //         return NotFound(new { Message = "No interview scheduled." });
+
+        //     return Ok(assignments);
+        // }
+
+        [HttpGet("assignment/schedule")]
+        public async Task<IActionResult> GetSchedule()
+        {
             var idClaim = User.FindFirst("id")?.Value;
             if (idClaim == null)
-                return Unauthorized("Candidate ID missing in token");
+                return Unauthorized("Candidate ID missing");
 
             int candidateId = int.Parse(idClaim);
 
-            // Fetch assignments
             var assignments = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
 
-            if (assignments == null || !assignments.Any())
-                return NotFound(new { Message = "No interview scheduled." });
+            var result = assignments.Select(a => new
+            {
+                id = a.Id,
+                interviewer = a.Interviewer,
+                scheduledDate = a.ScheduledDate,
+                interviewType = a.InterviewType,
+                status = a.Status,
+                interviewerStatus = a.InterviewerStatus,
+                remarks = a.Remarks,
+                meetingLink = a.MeetingLink,
+                offerStatus = a.OfferStatus,
+                offerLetterSend = a.OfferLetterSend   // <-- ADD THIS!!!
+            });
 
-            return Ok(assignments);
+            return Ok(result);
         }
+
 
         //accept offer letter by candidate
         [HttpPut("assignment/offer")]

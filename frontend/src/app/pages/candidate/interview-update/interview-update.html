@@ -17,7 +17,10 @@
       <p><strong>Scheduled Date:</strong> {{ s.scheduledDate | date:'medium' }}</p>
       <p><strong>Interview Type:</strong> {{ s.interviewType }}</p>
 
-      <button class="meeting-btn" (click)="openMeeting(s.meetingLink)">
+      <!-- SHOW JOIN BUTTON ONLY WHEN MEETING IS ACTIVE -->
+      <button class="meeting-btn"
+              *ngIf="s.status === 'Pending' || s.status === 'Accepted'"
+              (click)="openMeeting(s.meetingLink)">
         Join Meeting
       </button>
 
@@ -35,32 +38,49 @@
         <!-- 🔹 HIRED CASE -->
         <div *ngIf="s.status === 'Hired'">
 
-          <!-- If offerStatus is NULL → show Accept / Reject options -->
-          <div *ngIf="s.offerStatus == null">
-            <p class="offer-label"><strong>🎉 You are Hired!</strong> Please choose:</p>
+          
 
-            <button class="offer-accept" 
-                    (click)="updateOfferStatus(s.id, 1)">
-              Accept Offer Letter
-            </button>
 
-            <button class="offer-reject" 
-                    (click)="updateOfferStatus(s.id, 0)">
-              Reject Offer
-            </button>
+          <!-- ❌ OFFER LETTER NOT SENT YET -->
+          <div *ngIf="s.offerLetterSend === 0">
+            <p class="failed-text">🎉 Congratulations , You have been selected</p>
+            <p class="failed-text">📭 No offer letter has been sent yet.</p>
           </div>
 
-          <!-- OFFER ACCEPTED -->
-          <div *ngIf="s.offerStatus === 1" class="success-text">
-            ✅ Offer Letter Accepted! 🎉
-          </div>
+          <!-- <div *ngIf="s.Status === Hired">
+            <p class="failed-text">📭 No offer letter has been sent yet.</p>
+          </div> -->
 
-          <!-- OFFER REJECTED -->
-          <div *ngIf="s.offerStatus === 0" class="failed-text">
-            ❌ Offer Letter Rejected.
+          <!-- ✔ OFFER LETTER SENT -->
+          <div *ngIf="s.offerLetterSend === 1">
+
+            <!-- Show accept/reject options ONLY if user has not responded -->
+            <div *ngIf="s.offerStatus == null">
+              <p class="offer-label"><strong>🎉 You are Hired!</strong> Please choose:</p>
+
+              <button class="offer-accept" (click)="updateOfferStatus(s.id, 1)">
+                Accept Offer Letter
+              </button>
+
+              <button class="offer-reject" (click)="updateOfferStatus(s.id, 0)">
+                Reject Offer
+              </button>
+            </div>
+
+            <!-- OFFER ACCEPTED -->
+            <div *ngIf="s.offerStatus === 1" class="success-text">
+              ✅ Offer Letter Accepted! 🎉
+            </div>
+
+            <!-- OFFER REJECTED -->
+            <div *ngIf="s.offerStatus === 0" class="failed-text">
+              ❌ Offer Letter Rejected.
+            </div>
+
           </div>
 
         </div>
+
       </div>
 
     </div>

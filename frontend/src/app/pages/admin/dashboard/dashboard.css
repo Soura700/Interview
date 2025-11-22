@@ -9,7 +9,7 @@
 /* === Sidebar === */
 .sidebar {
   width: 260px;
-  background: linear-gradient(180deg, #007bff, #6f42c1);
+  background: linear-gradient(180deg, #1b4fc9, #153d99);
   color: white;
   display: flex;
   flex-direction: column;
@@ -31,12 +31,23 @@
   flex-direction: column;
 }
 
-.menu a {
-  color: white;
+/* .menu a {
+  color: rgb(255, 255, 255);
   text-decoration: none;
   padding: 12px 15px;
   margin-bottom: 8px;
   border-radius: 8px;
+  transition: all 0.3s ease;
+} */
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  position: relative;         /* required */
+  display: inline-block;      /* underline works correctly */
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 
@@ -71,18 +82,22 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-top: -20px
 }
 
 .topbar {
-  background: white;
+  background: #1b4fc9;
+  width : 100%;
   padding: 15px 25px;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  margin-top: 0;
 }
 
 .topbar h1 {
   margin: 0;
-  color: #333;
+  color: #fdfdfd;
   font-size: 1.4rem;
 }
 
@@ -119,5 +134,124 @@
   .logout-btn {
     padding: 6px 10px;
     font-size: 0.8rem;
+  }
+}
+.dashboard-container {
+  display: flex;
+  height: 100vh;         /* Full screen height */
+  overflow: hidden;      /* Prevent page from stretching */
+}
+
+/* LEFT SIDEBAR */
+/* Make sidebar fixed full height */
+.sidebar {
+  width: 280px;
+  background: #0563c7; 
+  background: linear-gradient(180deg, #1b4fc9, #153d99);
+  color: white;
+  height: 95vh;              /* Full viewport height */
+  position: fixed;            /* FIXED sidebar */
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;   /* Push logout to bottom */
+  padding: 30px 20px;
+}
+
+/* Sidebar menu items */
+.menu {
+  flex-grow: 1;               /* Allow menu to take full height above logout */
+}
+
+/* Logout button stays at bottom */
+.logout-section {
+  margin-top: auto;           /* Push to bottom */
+  padding-bottom: 20px;
+}
+
+.logout-btn {
+  width: 100%;
+}
+/* main content should shift right, equal to sidebar width */
+.main-content {
+  margin-left: 280px;     /* SAME as sidebar width */
+  padding: 20px;
+}
+.menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 6px;
+  width: 0%;
+  background-color: #dbec88;     /* underline color */
+  transition: width 0.8s ease;
+}
+
+/* On hover → underline grows */
+.menu a:hover::after,
+.menu a.active-link::after {
+  width: 100%;
+}
+
+/* Optional: background highlight */
+.menu a:hover,
+.menu a.active-link {
+  background: rgba(255, 255, 255, 0.15);
+}
+.menu a.active-link::after {
+  width: 0 !important;
+}
+@media (max-width: 900px) {
+
+  /* Sidebar becomes top navbar */
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    padding: 10px 15px;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: none;
+  }
+
+  /* Logo smaller & aligned left */
+  .logo {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  /* Menu becomes horizontal */
+  .menu {
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+  }
+
+  .menu a {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  /* Logout button moves to right in row */
+  .logout-section {
+    margin: 0;
+    padding: 0;
+  }
+
+  .logout-btn {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Main content now shifts down (no left margin) */
+  .main-content {
+    margin-left: 0;
+    margin-top: 10px;
+    padding: 15px;
   }
 }

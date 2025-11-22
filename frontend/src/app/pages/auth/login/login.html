@@ -1,54 +1,84 @@
-<div class="auth-container">
-  <div class="auth-box">
-    <h2>Login</h2>
+<div class="signin-container">
+  <div class="signin-box">
 
-    <div *ngIf="loading()" class="loading">🔄 Logging in...</div>
-    <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+    <!-- LEFT COLUMN (FORM) -->
+    <div class="signin-left">
+      <h2 class="signin-title">Sign In</h2>
 
-    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-      <!-- Email -->
-      <div class="input-group">
-        <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="credentials.email"
-          required
-          email
-          placeholder="Enter your email"
-        />
+      <div *ngIf="loading()" class="loading">🔄 Logging in...</div>
+      <div *ngIf="errorMessage()" class="error">{{ errorMessage() }}</div>
+
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="signin-form">
+
+        <!-- Email -->
+        <div class="input-group">
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="credentials.email"
+            required
+            email
+            placeholder="Email"
+            class="signin-input"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="input-group password-group">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            name="password"
+            [(ngModel)]="credentials.password"
+            required
+            placeholder="Password"
+            class="signin-input"
+          />
+          <mat-icon class="toggle-eye" (click)="togglePasswordVisibility()">
+            {{ showPassword() ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </div>
+
+        <!-- Role -->
+        <div class="input-group">
+          <select
+            name="role"
+            [(ngModel)]="credentials.role"
+            required
+            class="signin-input"
+          >
+            <option value="">Select Role</option>
+            <option value="Candidate">Candidate</option>
+            <option value="Interviewer">Interviewer</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+
+        <button type="submit" [disabled]="loading() || loginForm.invalid" class="signin-btn">
+          {{ loading() ? 'Logging in...' : 'Login' }}
+        </button>
+
+      </form>
+
+      
+    </div>
+
+    <!-- RIGHT COLUMN (IMAGE SLIDER) -->
+    <div class="signin-right">
+      <div class="signin-image-wrapper">
+        <img [src]="images[currentIndex]" class="signin-image" />
       </div>
 
-      <!-- Password -->
-      <div class="input-group password-group">
-        <label>Password</label>
-        <input
-          [type]="showPassword() ? 'text' : 'password'"
-          name="password"
-          [(ngModel)]="credentials.password"
-          required
-          placeholder="Enter your password"
-        />
-        <mat-icon class="toggle-eye" (click)="togglePasswordVisibility()">
-          {{ showPassword() ? 'visibility_off' : 'visibility' }}
-        </mat-icon>
-      </div>
+      <h3 class="welcome-title">Welcome Back</h3>
+      <p class="welcome-subtitle">Get In</p>
 
-      <!-- Role Selection -->
-      <div class="input-group">
-        <label>Login As</label>
-        <select name="role" [(ngModel)]="credentials.role" required class="role-select">
-          <option value="">Select Role</option>
-          <option value="Candidate">Candidate</option>
-          <option value="Interviewer">Interviewer</option>
-          <option value="Admin">Admin</option>
-        </select>
+      <div class="dots">
+        <div
+          *ngFor="let img of images; index as i"
+          class="dot"
+          [class.active]="i === currentIndex"
+        ></div>
       </div>
+    </div>
 
-      <!--  Submit -->
-      <button type="submit" [disabled]="loading() || loginForm.invalid">
-        {{ loading() ? 'Logging in...' : 'Login' }}
-      </button>
-    </form>
   </div>
 </div>

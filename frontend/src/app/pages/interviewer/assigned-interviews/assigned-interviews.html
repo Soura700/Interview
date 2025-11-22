@@ -1,16 +1,12 @@
 <div class="assigned-wrapper">
-
   <h2 class="page-title">📌 Assigned Interviews</h2>
 
   <div *ngIf="loading()" class="loading">Loading...</div>
 
-  <div *ngIf="noData()" class="empty-box">
-    No interviews assigned to you.
-  </div>
+  <div *ngIf="noData()" class="empty-box">No interviews assigned to you.</div>
 
   <div class="cards">
     <div class="card" *ngFor="let a of assigned()">
-      
       <h3>{{ a.candidate.fullName }}</h3>
 
       <p>Email: {{ a.candidate.email }}</p>
@@ -18,13 +14,29 @@
       <p>Skills: {{ a.candidate.skillSet }}</p>
       <p>Interview Type: {{ a.interviewType }}</p>
 
-      <!-- Resume -->
+      <!-- Resume
       <a *ngIf="a.candidate.resumePath"
          [href]="a.candidate.resumePath"
          target="_blank"
          class="resume-btn">
          📄 View Resume
-      </a>
+      </a> -->
+
+      <!-- Resume Section -->
+      <div class="resume-box">
+        <!-- Resume Available -->
+        <a
+          *ngIf="a.candidate.resumeUrl"
+          [href]="a.candidate.resumeUrl"
+          target="_blank"
+          class="resume-btn"
+        >
+          👁 View Resume
+        </a>
+
+        <!-- Resume Not Available -->
+        <span *ngIf="!a.candidate.resumeUrl" class="no-resume"> ❌ No resume uploaded </span>
+      </div>
 
       <!-- Buttons -->
       <div class="btn-row">
@@ -37,12 +49,8 @@
         <label>Select Interview Date:</label>
         <input type="datetime-local" [(ngModel)]="selectedDate" />
 
-        <button class="confirm-btn" (click)="acceptInterview(a.id)">
-          Confirm
-        </button>
+        <button class="confirm-btn" (click)="acceptInterview(a.id)">Confirm</button>
       </div>
-
     </div>
   </div>
-
 </div>

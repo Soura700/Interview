@@ -336,18 +336,42 @@ namespace backend.Services
             return "Interview rejected.";
         }
 
+        // public async Task<string> UpdateOfferStatusAsync(int candidateId, int offerStatus)
+        // {
+        //     // find assignment for candidate
+        //     var assignment = await _context.InterviewAssignments
+        //         .Where(a => a.CandidateId == candidateId
+        //                     && a.Status == "Hired")
+        //         .FirstOrDefaultAsync();
+
+        //     if (assignment == null)
+        //         return "No hired candidate assignment found.";
+
+        //     // Save offer status (1 = accepted, 0 = rejected)
+        //     assignment.OfferStatus = offerStatus;
+
+        //     await _context.SaveChangesAsync();
+
+        //     return offerStatus == 1
+        //         ? "Offer accepted successfully."
+        //         : "Offer rejected successfully.";
+        // }
+
         public async Task<string> UpdateOfferStatusAsync(int candidateId, int offerStatus)
         {
-            // find assignment for candidate
             var assignment = await _context.InterviewAssignments
-                .Where(a => a.CandidateId == candidateId
-                            && a.Status == "Hired")
+                .Where(a => a.CandidateId == candidateId && a.Status == "Hired")
+                .OrderByDescending(a => a.Id)
                 .FirstOrDefaultAsync();
 
             if (assignment == null)
                 return "No hired candidate assignment found.";
 
-            // Save offer status (1 = accepted, 0 = rejected)
+            // ❗ Block if offer letter not yet sent
+            if (assignment.OfferLetterSend == 0)
+                return "Offer letter not sent yet.";
+
+            // Save offer acceptance or rejection
             assignment.OfferStatus = offerStatus;
 
             await _context.SaveChangesAsync();
