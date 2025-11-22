@@ -1,135 +1,95 @@
-/*Full container setup */
-.auth-container {
+/* ============================================
+   MAIN CONTAINER BACKGROUND
+============================================ */
+.signin-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(120deg, #e0eafc, #cfdef3);
-  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom, #4169f5, #dbe8ff);
   padding: 20px;
+  font-family: "Poppins", sans-serif;
 }
 
-/*Login box */
-.auth-box {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  padding: 40px 50px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+/* ============================================
+   MAIN CARD BOX
+============================================ */
+.signin-box {
   width: 100%;
-  max-width: 400px;
+  max-width: 900px;           /* balanced width */
+  background: #fff;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 768px) {
+  .signin-box {
+    flex-direction: row;      /* two columns only on bigger screens */
+  }
+}
+
+/* ============================================
+   LEFT COLUMN : FORM AREA
+============================================ */
+.signin-left {
+  flex: 1;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signin-title {
+  font-size: 32px;
+  font-weight: 700;
   text-align: center;
-  transition: all 0.3s ease;
+  color: #4169f5;
+  margin-bottom: 30px;
 }
 
-.auth-box:hover {
-  transform: scale(1.01);
-}
-
-.auth-box h2 {
-  margin-bottom: 25px;
-  color: #333;
-  font-weight: 600;
-}
-
-/*Input styling */
-.input-group {
-  text-align: left;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #555;
-}
-
-.input-group input,
-.input-group select {
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   width: 100%;
-  padding: 10px 40px 10px 10px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+}
+
+/* ============================================
+   INPUT STYLES
+============================================ */
+.signin-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #f2f2f2;
+  border-radius: 8px;
+  border: none;
+  outline: none;
   font-size: 14px;
-  transition: 0.3s;
   box-sizing: border-box;
 }
 
-.input-group input:focus,
-.input-group select:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
-}
-
+/* PERFECT EYE ICON ALIGNMENT */
 .password-group {
   position: relative;
 }
 
-.password-group input {
-  padding-right: 42px;
-}
-
-/* .toggle-eye {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #777;
-  font-size: 20px;
-  user-select: none;
-  transition: color 0.3s ease, transform 0.2s ease;
-} */
-
-/*toggle eye fixed */
 .toggle-eye {
   position: absolute;
-  right: 12px;
-  top: 20px;
-  bottom: 0;
-  margin: auto;
-  width: 22px;
-  height: 22px;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #777;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  cursor: pointer;
-  color: #777;
-  transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.toggle-eye:hover {
-  color: #007bff;
-  transform: translateY(-10%) scale(1);
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background: linear-gradient(90deg, #007bff, #6f42c1);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s;
-}
-
-button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.loading {
-  color: #007bff;
-  font-weight: 500;
-  margin-bottom: 10px;
-  text-align: center;
-}
+/* Error */
 
 .error {
   color: #e74c3c;
@@ -140,44 +100,200 @@ button:hover {
   margin-bottom: 10px;
 }
 
-.switch-link {
-  margin-top: 15px;
-  font-size: 14px;
-}
 
-.switch-link a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.switch-link a:hover {
-  text-decoration: underline;
-}
-
-.error {
-  color: #ff4d4d;
-  background: #ffe6e6;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 10px;
+/* ============================================
+   SUBMIT BUTTON
+============================================ */
+.signin-btn {
+  background: #4169f5;
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
   font-weight: 600;
-  border: 1px solid #ffb3b3;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.25s ease;
 }
 
-/*Responsive design */
-@media (max-width: 600px) {
-  .auth-box {
-    padding: 25px;
-    max-width: 100%;
+.signin-btn:hover {
+  background: #2f50c1;
+}
+
+/* ============================================
+   FOOTER TEXT
+============================================ */
+.signin-footer {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 18px;
+}
+
+.signin-link {
+  color: #4169f5;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ============================================
+   RIGHT COLUMN (SLIDER)
+============================================ */
+.signin-right {
+  flex: 1;
+  display: none; /* hidden by default for small screens */
+}
+
+@media (min-width: 768px) {
+  .signin-right {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: #fff;
+  }
+}
+
+.signin-image-wrapper {
+  width: 100%;
+  height: 300px;   /* taller image area like React */
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.signin-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.welcome-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #4169f5;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.welcome-subtitle {
+  font-size: 14px;
+  color: #777;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* SLIDER DOTS */
+.dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: #ccc;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.dot.active {
+  background: #4169f5;
+}
+
+/* ============================================
+   RESPONSIVE: LARGE TABLETS (max 992px)
+============================================ */
+@media (max-width: 992px) {
+  .signin-box {
+    max-width: 90%;
   }
 
-  h2 {
+  .signin-left {
+    padding: 40px 30px;
+  }
+
+  .signin-title {
+    font-size: 28px;
+  }
+
+  .signin-image-wrapper {
+    height: 250px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE: SMALL TABLETS & PHONES (< 768px)
+============================================ */
+@media (max-width: 768px) {
+  .signin-box {
+    flex-direction: column;
+    max-width: 480px;
+  }
+
+  .signin-right {
+    display: none; /* hide slider */
+  }
+
+  .signin-left {
+    padding: 35px 25px;
+  }
+
+  .signin-title {
+    font-size: 26px;
+  }
+
+  .signin-input {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .signin-btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .signin-footer {
+    font-size: 13px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE: SMALL PHONES (< 480px)
+============================================ */
+@media (max-width: 480px) {
+  .signin-box {
+    max-width: 100%;
+    border-radius: 1.2rem;
+  }
+
+  .signin-left {
+    padding: 25px 20px;
+  }
+
+  .signin-title {
     font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .signin-input {
+    padding: 10px;
+    font-size: 13px;
   }
 
   .toggle-eye {
-    font-size: 18px;
     right: 10px;
+    font-size: 18px;
+  }
+
+  .signin-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .signin-footer {
+    font-size: 12px;
   }
 }

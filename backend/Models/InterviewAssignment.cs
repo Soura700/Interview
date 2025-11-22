@@ -53,5 +53,13 @@ namespace backend.Models
         // 0 = rejected
         public int? OfferStatus { get; set; } = null;
 
+        // NEW → Offer Letter Send Status
+
+        // Offer Letter Sent Status
+        // 0 = not sent (default)dotnet ef migrations add AddOfferLetterSendField
+
+        // 1 = sent
+        public int OfferLetterSend { get; set; } = 0;
+
     }
 }
