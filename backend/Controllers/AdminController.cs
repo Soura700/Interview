@@ -36,12 +36,6 @@ namespace backend.Controllers
 
 
         /// Create interview assignment (Admin assigns candidate to interviewer)
-        // [HttpPost("assignments")]
-        // public async Task<IActionResult> CreateAssignment(CreateAssignmentDto dto)
-        // {
-        //     var result = await _adminService.CreateAssignmentAsync(dto);
-        //     return Ok(result);
-        // }
 
         [HttpPost("assignments")]
         public async Task<IActionResult> CreateAssignment(CreateAssignmentDto dto)
@@ -104,19 +98,6 @@ namespace backend.Controllers
             return Ok(result);
         }
 
-        //         [HttpPost("assignments")]
-        // public async Task<IActionResult> CreateAssignment(CreateAssignmentDto dto)
-        // {
-        //     var result = await _adminService.CreateAssignmentAsync(dto);
-
-        //     // ✅ Once created, auto-generate a meeting link
-        //     var meetingLink = await _videoMeetingService.CreateMeetingLinkForAssignmentAsync(result.Id);
-
-        //     // ✅ Reload the assignment with the new fields
-        //     result.MeetingLink = meetingLink;
-
-        //     return Ok(result);
-        // }
 
 
     }

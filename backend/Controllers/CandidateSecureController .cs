@@ -1,73 +1,3 @@
-// using Microsoft.AspNetCore.Authorization;
-// using Microsoft.AspNetCore.Mvc;
-
-// using Microsoft.AspNetCore.Authorization;
-// using Microsoft.AspNetCore.Mvc;
-
-// namespace backend.Controllers
-// {
-//     [ApiController]
-//     [Route("api/candidate/secure")]
-//     [Authorize(AuthenticationSchemes = "CandidateScheme", Roles = "Candidate")]
-//     public class CandidateSecureController : ControllerBase
-//     {
-//         [HttpGet("check")]
-//         public IActionResult CheckCandidate()
-//         {
-//             return Ok(new { authenticated = true });
-//         }
-
-//         [HttpGet("interviews")]
-//         public async Task<IActionResult> GetInterviewDetails()
-//         {
-//             // Get candidate ID from the JWT token
-//             var candidateId = int.Parse(User.FindFirst("id")!.Value);
-
-//             var assignments = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
-
-//             var response = new
-//             {
-//                 upcoming = assignments.Where(a =>
-//                     (a.Status == "Pending" || a.Status == "Accepted") &&
-//                     a.ScheduledDate >= DateTime.UtcNow
-//                 ),
-
-//                 accepted = assignments.Where(a => a.Status == "Accepted"),
-
-//                 rejected = assignments.Where(a => a.Status == "Rejected"),
-
-//                 completed = assignments.Where(a => a.Status == "Completed")
-//             };
-
-//             return Ok(response);
-//         }
-//     }
-
-// }
-
-
-// // namespace backend.Controllers
-// // {
-// //     [ApiController]
-// //     [Route("api/candidate/secure")]
-// //     [Authorize(AuthenticationSchemes = "CandidateScheme", Roles = "Candidate")]
-// //     // [Authorize(Roles = "Candidate")]   // JWT Role Check
-// //     public class CandidateSecureController : ControllerBase
-// //     {
-// //         [HttpGet("profile")]
-
-// //         public IActionResult CheckAdmin()
-// //         {
-// //             return Ok(new { authenticated = true });
-// //         }
-// //         // public IActionResult GetProfile()
-// //         // {
-// //         //     return Ok(new { message = "Candidate authenticated", success = true });
-// //         // }
-// //     }
-// // }
-
-
 using backend.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -89,7 +19,7 @@ namespace backend.Controllers
             _candidateService = candidateService;
         }
 
-        // 🔐 Check if candidate is authenticated
+        // Check if candidate is authenticated
         [HttpGet("check")]
         public IActionResult CheckCandidate()
         {
@@ -102,7 +32,7 @@ namespace backend.Controllers
         public async Task<IActionResult> GetInterviewDetails()
         {
             // Log full user claims
-            Console.WriteLine("🔍 CandidateSecureController Claims:");
+            // Console.WriteLine("CandidateSecureController Claims:");
             foreach (var c in User.Claims)
                 Console.WriteLine($" - {c.Type}: {c.Value}");
 
@@ -119,7 +49,7 @@ namespace backend.Controllers
 
             var assignments = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
 
-            Console.WriteLine("🔍 Total Assignments for candidate: " + assignments.Count);
+            // Console.WriteLine("Total Assignments for candidate: " + assignments.Count);
 
             var response = new
             {
@@ -140,27 +70,26 @@ namespace backend.Controllers
 
         // 
         // 
-        // 
         [HttpGet("profile")]
         public async Task<IActionResult> GetProfile()
         {
-            // 🔍 Ensure user authenticated
+            // Ensure user authenticated
             if (!User.Identity.IsAuthenticated)
                 return Unauthorized("Candidate not authenticated");
 
-            // 🔍 Extract ID from JWT
+            // Extract ID from JWT
             var idClaim = User.FindFirst("id")?.Value;
             if (idClaim == null)
                 return Unauthorized("Missing candidate ID in token");
 
             int candidateId = int.Parse(idClaim);
 
-            // 🔍 Get candidate from DB
+            // Get candidate from DB
             var candidate = await _candidateService.GetCandidateByIdAsync(candidateId);
             if (candidate == null)
                 return NotFound("Candidate not found");
 
-            // 🔥 Prepare response
+            // Prepare response
             return Ok(new
             {
                 fullName = candidate.FullName,
@@ -183,7 +112,7 @@ namespace backend.Controllers
             if (extension != ".pdf")
                 return BadRequest("Only PDF files are allowed.");
 
-            // ✅ Get Candidate ID from JWT Token
+            // Get Candidate ID from JWT Token
             var idClaim = User.FindFirst("id")?.Value;
             if (idClaim == null)
                 return Unauthorized("Candidate ID missing in token.");
@@ -247,18 +176,18 @@ namespace backend.Controllers
         [HttpPut("assignment/offer")]
         public async Task<IActionResult> UpdateOfferStatus([FromQuery] int offerStatus)
         {
-            // 1️⃣ Ensure user authenticated
+            // Ensure user authenticated
             if (!User.Identity.IsAuthenticated)
                 return Unauthorized("Candidate not authenticated");
 
-            // 2️⃣ Read candidateId from JWT
+            // Read candidateId from JWT
             var idClaim = User.FindFirst("id")?.Value;
             if (idClaim == null)
                 return Unauthorized("Candidate ID missing in token");
 
             int candidateId = int.Parse(idClaim);
 
-            // 3️⃣ Fetch the candidate’s assignment
+            // Fetch the candidate’s assignment
             var assignments = await _assignmentService.GetAssignmentsByCandidateAsync(candidateId);
 
             // Find ONLY hired assignment
@@ -266,8 +195,5 @@ namespace backend.Controllers
 
             return Ok(new { Message = message });
         }
-
-
-
     }
 }
