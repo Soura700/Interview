@@ -145,4 +145,22 @@ public class CandidateService : ICandidateService
             .ToListAsync();
     }
 
+    public async Task<List<CandidateOfferDto>> GetCandidatesWithOfferStatusAsync()
+    {
+        var data = await _context.InterviewAssignments
+            .Include(a => a.Candidate)
+            .Where(a => a.Status == "Hired")   // Only hired candidates
+            .Select(a => new CandidateOfferDto
+            {
+                CandidateId = a.CandidateId,
+                CandidateName = a.Candidate.FullName,
+                Email = a.Candidate.Email,
+                Status = a.Status,
+                Remarks = a.Remarks
+            })
+            .ToListAsync();
+    
+        return data;
+    }
+
 }
