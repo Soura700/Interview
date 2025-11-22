@@ -21,7 +21,7 @@ namespace backend.Controllers
             return Ok(await _service.GetRejectedCandidatesByMonth(year, month));
         }
 
-         // GET => Succeed Candidates per Month
+        // GET => Succeed Candidates per Month
 
         [HttpGet("success")]
         public async Task<IActionResult> GetSuccess(int year, int month)
@@ -36,6 +36,7 @@ namespace backend.Controllers
         {
             return Ok(await _service.GetProposalRejectedCandidatesByMonth(year, month));
         }
+
 
         // GET => Successful Candidates by Skill per Month
         [HttpGet("success-by-skill")]
